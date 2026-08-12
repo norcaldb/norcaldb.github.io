@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  NorCal DB Day 2026 — website
+  ----------------------------------------------------------------------------
+  EDIT ONE PLACE: scroll to the SITE = {...} block at the bottom of this file.
+  Every date, venue, contact and form URL on the page is filled from there,
+  including the schema.org Event markup. Leave a field as "" and the page
+  renders a styled "TBD" for it automatically.
+
+  Everything else (schedule rows, past editions, organizers) is plain HTML in
+  the sections below — search for "SCHEDULE", "EDITIONS", "ORGANIZERS".
+
+  Host it free on GitHub Pages: create a repo named `norcaldb.github.io`,
+  drop this file in as `index.html`, done.
+  ============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NorCal DB Day 2026 — Northern California Database Day</title>
+<meta name="description" content="NorCal DB Day 2026 — Friday, October 16, 2026 at UC Santa Cruz. A free, single-day gathering of the Northern California data-systems community: invited talks, a gong show, and a poster session.">
+<meta name="theme-color" content="#0d1a15">
+<meta name="color-scheme" content="light">
+
+<!-- social preview -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NorCal DB Day">
+<meta property="og:title" content="NorCal DB Day 2026 — Northern California Database Day">
+<meta property="og:description" content="Friday, October 16, 2026 · College Nine & Ten Multipurpose Room, UC Santa Cruz. Free to attend, registration required.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NorCal DB Day 2026 — October 16, UC Santa Cruz">
+<meta name="twitter:description" content="Friday, October 16, 2026 · UC Santa Cruz. Free to attend, registration required.">
+<!-- TODO: host a 1200x630 preview image and set both of these to its absolute URL
+<meta property="og:image" content="https://norcaldb.github.io/preview.png">
+<meta name="twitter:image" content="https://norcaldb.github.io/preview.png">
+<link rel="canonical" href="https://norcaldb.github.io/"> -->
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231d4536'/%3E%3Cellipse cx='16' cy='11' rx='8.5' ry='3.4' fill='none' stroke='%23edc879' stroke-width='2'/%3E%3Cpath d='M7.5 11v10c0 1.9 3.8 3.4 8.5 3.4s8.5-1.5 8.5-3.4V11' fill='none' stroke='%23edc879' stroke-width='2'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+
+<style>
+  /* ==========================================================================
+     TOKENS
+     Green + gold is not decoration here: it is the actual color of the
+     Northern California hills. Gold splits into two values because the
+     decorative gold fails contrast as small text.
+     ========================================================================== */
+  :root{
+    --ink:#0d1a15;
+    --body:#33423a;
+    --muted:#55655c;
+
+    --forest:#1d4536;
+    --forest-deep:#123024;
+    --forest-dark:#08150f;
+
+    --gold:#c08a26;        /* rules, marks, large type only */
+    --gold-ink:#96650f;    /* small text on light — 5.0:1 on white */
+    --gold-lt:#edc879;     /* on dark */
+
+    --paper:#f5f8f4;
+    --fog:#e9efe9;
+    --line:#d5ded6;
+    --card:#ffffff;
+
+    --maxw:1140px;
+    --nav-h:62px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--body);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:16.5px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  h1,h2,h3{
+    font-family:"Newsreader",Georgia,serif;
+    font-weight:600;line-height:1.12;margin:0;color:var(--ink);
+    letter-spacing:-.012em;
+  }
+  p{margin:0 0 1em;}
+  p:last-child{margin-bottom:0;}
+  a{color:var(--forest);text-decoration:none;}
+  a:hover{color:var(--gold-ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px;}
+  :focus-visible{outline:2.5px solid var(--gold);outline-offset:3px;border-radius:2px;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 26px;}
+
+  .skip{position:absolute;left:-9999px;top:0;z-index:200;background:var(--gold-lt);color:var(--ink);
+    padding:12px 20px;font-weight:600;}
+  .skip:focus{left:12px;top:12px;}
+
+  /* ---------- shared marks ---------- */
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;letter-spacing:.19em;text-transform:uppercase;
+    color:var(--gold-ink);font-weight:600;
+    display:flex;align-items:center;gap:11px;margin-bottom:12px;
+  }
+  .eyebrow::before{content:"";width:22px;height:1.5px;background:var(--gold);flex:none;}
+  .eyebrow.on-dark{color:var(--gold-lt);}
+  .eyebrow.on-dark::before{background:var(--gold-lt);}
+
+  .tbd{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;
+    letter-spacing:.09em;text-transform:uppercase;color:var(--gold-ink);
+    background:#fbf3e2;border:1px solid #ecd9ae;border-radius:2px;padding:1px 7px;
+    white-space:nowrap;
+  }
+  .on-dark .tbd,.side-card.dark .tbd,.hero .tbd,footer .tbd,.ways .tbd{
+    color:var(--gold-lt);background:rgba(237,200,121,.10);border-color:rgba(237,200,121,.32);
+  }
+
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:15px;
+    padding:13px 24px;border-radius:2px;border:1px solid transparent;
+    transition:transform .16s ease,background .16s ease,border-color .16s ease,box-shadow .16s ease;
+  }
+  .btn:hover{text-decoration:none;transform:translateY(-2px);}
+  .btn-primary{background:var(--gold);color:#1b1204;box-shadow:0 1px 0 rgba(0,0,0,.08);}
+  .btn-primary:hover{background:var(--gold-lt);color:#1b1204;}
+  .btn-ghost{border-color:rgba(255,255,255,.42);color:#eaf3ed;}
+  .btn-ghost:hover{border-color:#fff;color:#fff;background:rgba(255,255,255,.08);}
+  .btn-outline{border-color:var(--line);background:var(--card);color:var(--forest);}
+  .btn-outline:hover{border-color:var(--forest);color:var(--forest);}
+  .btn .arr{font-family:"IBM Plex Mono",monospace;transition:transform .16s ease;}
+  .btn:hover .arr{transform:translateX(3px);}
+  /* a placeholder that isn't a link yet — looks like a control, can't be clicked into a 404 */
+  .btn.is-pending{background:var(--fog);color:var(--muted);border-color:var(--line);
+    cursor:not-allowed;box-shadow:none;}
+  .btn.is-pending:hover{transform:none;background:var(--fog);}
+
+  /* ==========================================================================
+     NAV
+     ========================================================================== */
+  .nav{position:sticky;top:0;z-index:60;transition:background .25s ease,box-shadow .25s ease;}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    height:var(--nav-h);}
+  .nav.is-stuck{background:rgba(9,24,18,.90);backdrop-filter:blur(10px) saturate(1.2);
+    box-shadow:0 1px 0 rgba(237,200,121,.18);}
+  .brandmark{font-family:"IBM Plex Mono",monospace;font-weight:600;letter-spacing:.13em;
+    text-transform:uppercase;font-size:12.5px;color:var(--gold-lt);white-space:nowrap;}
+  .brandmark .est{color:#93b3a1;}
+  .nav ul{list-style:none;display:flex;gap:24px;margin:0;padding:0;}
+  .nav ul a{color:#cfe3d8;font-size:14px;font-weight:500;position:relative;}
+  .nav ul a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1.5px;
+    background:var(--gold-lt);transform:scaleX(0);transform-origin:left;transition:transform .2s ease;}
+  .nav ul a:hover{color:#fff;text-decoration:none;}
+  .nav ul a:hover::after{transform:scaleX(1);}
+
+  /* mobile disclosure nav — the previous build simply deleted the menu below 860px */
+  .mnav{display:none;position:relative;}
+  .mnav summary{list-style:none;cursor:pointer;color:#cfe3d8;font-size:13px;font-weight:600;
+    font-family:"IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid rgba(237,200,121,.34);padding:8px 13px;border-radius:2px;}
+  .mnav summary::-webkit-details-marker{display:none;}
+  .mnav[open] summary{background:rgba(237,200,121,.12);}
+  .mnav ul{position:absolute;right:0;top:calc(100% + 10px);flex-direction:column;gap:0;
+    background:#0e2419;border:1px solid rgba(237,200,121,.24);border-radius:3px;
+    padding:6px 0;min-width:190px;box-shadow:0 18px 40px rgba(0,0,0,.4);}
+  .mnav ul li{border-bottom:1px solid rgba(255,255,255,.06);}
+  .mnav ul li:last-child{border-bottom:none;}
+  .mnav ul a{display:block;padding:11px 18px;font-size:14.5px;}
+  .mnav ul a::after{display:none;}
+
+  /* ==========================================================================
+     HERO
+     ========================================================================== */
+  .hero{position:relative;background:linear-gradient(180deg,
+      #08150f 0%,#0c2016 20%,#122e21 40%,#1a3f2d 60%,#255035 80%,#3d6440 100%);
+    color:#e7f2ea;overflow:hidden;
+    min-height:clamp(520px,80vh,740px);display:flex;flex-direction:column;}
+  /* fit the whole illustration and anchor it to the horizon rather than
+     cover-and-crop — cropping blew the buildings up and ate the bridge,
+     and on a phone it left three landmarks out of nine */
+  .hero .skyline{position:absolute;left:0;right:0;bottom:0;width:100%;height:auto;
+    pointer-events:none;z-index:0;}
+  /* two scrims: a vertical one for the sky, and a left wash so the headline
+     always has a quiet field behind it whatever the illustration crops to */
+  .hero::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:
+    linear-gradient(105deg,rgba(6,17,12,.80) 0%,rgba(6,17,12,.45) 38%,rgba(6,17,12,0) 68%),
+    linear-gradient(180deg,rgba(8,21,15,.62) 0%,rgba(8,21,15,.10) 30%,rgba(8,21,15,0) 55%,
+      rgba(8,21,15,.28) 84%,rgba(7,18,13,.60) 100%);}
+  .hero > *{position:relative;z-index:3;}
+
+  /* Scattered sky text. The band reserves its own height so the scatter can
+     never reach the headline; children are absolute within it. */
+  /* Names sit ON the hero background, not in a reserved band — as a flow item
+     they added ~200px of height to the hero. Absolute means zero layout cost.
+     z-index 1 puts them above the skyline but beneath the scrim, so the scrim
+     still mutes them where the headline crosses. */
+  .hero > .hero-names{position:absolute;left:0;right:0;
+    top:calc(var(--nav-h) + 6px);bottom:30%;z-index:1;pointer-events:none;}
+  .hero-names{font-family:"IBM Plex Mono",monospace;
+    font-size:clamp(10px,1.15vw,14px);letter-spacing:.15em;
+    text-transform:uppercase;user-select:none;}
+  .hero-names span{position:absolute;white-space:nowrap;font-weight:500;
+    transform:rotate(var(--r));}
+  .hero-names span:nth-child(odd){color:#dcefe4;}
+  .hero-names span:nth-child(even){color:#f3ddb0;}
+
+  .hero-body{padding:54px 0 78px;margin-top:auto;}
+  .hero h1{
+    font-size:clamp(40px,8.2vw,92px);font-weight:600;color:#fff;line-height:.98;
+    letter-spacing:-.03em;
+  }
+  .hero h1 .yr{font-style:italic;font-weight:400;color:var(--gold-lt);letter-spacing:-.02em;}
+  /* same face, style and colour as the year in the headline, just smaller */
+  .hero-host{font-family:"Newsreader",Georgia,serif;font-style:italic;font-weight:600;
+    font-size:clamp(25px,3.9vw,46px);line-height:1.08;color:var(--gold-lt);
+    margin-top:6px;letter-spacing:-.02em;}
+  .hero-rule{width:64px;height:2px;background:var(--gold);margin:24px 0 22px;transform-origin:left;}
+  .hero-sub{
+    font-family:"Newsreader",Georgia,serif;font-size:clamp(19px,2.5vw,27px);
+    line-height:1.36;color:#cde0d3;max-width:46ch;font-weight:400;margin:0;
+  }
+  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:32px;}
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:13px;
+    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.20);
+    padding:9px 14px;border-radius:2px;color:#e7f2ea;
+    display:flex;align-items:center;gap:10px;
+  }
+  .chip b{color:var(--gold-lt);font-weight:600;font-size:11px;letter-spacing:.16em;}
+  .hero-cta{margin-top:34px;display:flex;gap:13px;flex-wrap:wrap;align-items:center;}
+  .hero-note{font-size:13.5px;color:#a9c7b6;}
+
+  /* page-load stagger */
+  @media(prefers-reduced-motion:no-preference){
+    .rise{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.3,1) forwards;}
+    .rise:nth-child(1){animation-delay:.05s}.rise:nth-child(2){animation-delay:.13s}
+    .rise:nth-child(3){animation-delay:.21s}.rise:nth-child(4){animation-delay:.28s}
+    .rise:nth-child(5){animation-delay:.35s}.rise:nth-child(6){animation-delay:.42s}
+    .rise:nth-child(7){animation-delay:.49s}
+    @keyframes rise{to{opacity:1;transform:none;}}
+  }
+
+  /* ==========================================================================
+     LAYOUT
+     ========================================================================== */
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:56px;
+    padding:76px 0 88px;align-items:start;}
+  main > section{margin-bottom:74px;scroll-margin-top:calc(var(--nav-h) + 20px);}
+  main > section:last-child{margin-bottom:0;}
+  .section-title{font-size:clamp(29px,3.6vw,42px);margin-bottom:14px;}
+  .lead{font-size:18.5px;color:var(--ink);line-height:1.55;}
+  .note{color:var(--muted);font-size:15px;}
+
+  /* ==========================================================================
+     SCHEDULE
+     ========================================================================== */
+  .sched{width:100%;border-collapse:collapse;margin-top:14px;font-size:15.5px;}
+  .sched caption{text-align:left;color:var(--muted);font-size:14px;padding-bottom:10px;}
+  .sched thead th{
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;
+    padding:0 14px 9px;border-bottom:1.5px solid var(--ink);
+  }
+  .sched td,.sched th[scope="row"]{padding:14px;border-bottom:1px solid var(--line);
+    vertical-align:top;text-align:left;}
+  .sched th[scope="row"]{
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--muted);
+    font-weight:500;white-space:nowrap;width:132px;
+  }
+  .ev{font-weight:600;color:var(--ink);font-size:16.5px;
+    font-family:"Newsreader",Georgia,serif;letter-spacing:-.005em;}
+  .ev.key{color:var(--forest);}
+  .ev.key::after{content:"keynote";font-family:"IBM Plex Mono",monospace;font-size:9.5px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);
+    vertical-align:.42em;margin-left:9px;font-weight:600;}
+  /* breaks recede so the actual talks carry the visual weight */
+  .ev.brk{font-family:"IBM Plex Sans",sans-serif;font-size:15px;font-weight:500;color:var(--muted);}
+  .ev.brk::after{content:none;}
+  /* speaker line: names, then affiliations in parentheses */
+  .ev-speaker{display:block;margin-top:4px;font-size:14.5px;color:var(--body);}
+  .ev-sub{color:var(--muted);font-size:14.5px;display:block;margin-top:3px;}
+
+  /* abstracts collapse by default — <details> so they work without JS */
+  .abs{margin-top:9px;}
+  .abs summary{display:inline-flex;align-items:center;gap:7px;cursor:pointer;
+    list-style:none;font-family:"IBM Plex Mono",monospace;font-size:10px;
+    letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--gold-ink);
+    background:#fbf3e2;border:1px solid #ecd9ae;border-radius:2px;padding:3px 9px;
+    width:max-content;}
+  .abs summary::-webkit-details-marker{display:none;}
+  .abs summary::after{content:"\25be";font-size:9px;transition:transform .15s ease;}
+  .abs[open] summary::after{transform:rotate(180deg);}
+  .abs summary:hover{background:#f6e8c9;}
+  .abs p{margin:11px 0 0;font-size:14.5px;line-height:1.6;color:var(--body);
+    max-width:64ch;border-left:2px solid var(--line);padding-left:15px;}
+
+  /* ==========================================================================
+     CARDS / PILLS / DATES
+     ========================================================================== */
+  /* ---------- ways to take part ----------
+     White cards on near-white paper washed out. This is the page's one ask, so
+     it gets the one dark panel in the body — echoing the hero and footer, and
+     breaking a long stretch of paper. Hairlines instead of three more boxes. */
+  .ways{background:var(--forest-deep);border-radius:4px;margin-top:24px;
+    padding:30px 34px;display:grid;grid-template-columns:repeat(3,1fr);
+    background-image:radial-gradient(120% 90% at 8% 0%,rgba(45,92,68,.55),transparent 62%);}
+  /* flex column + margin-top:auto lines the three buttons up on one baseline
+     even though the blurbs above them are different lengths */
+  .way{padding:0 26px;border-left:1px solid rgba(237,200,121,.20);
+    display:flex;flex-direction:column;}
+  .way:first-child{padding-left:0;border-left:none;}
+  .way:last-child{padding-right:0;}
+  .way .tag{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--gold-lt);display:block;margin-bottom:9px;}
+  .way h3{font-size:21px;color:#fff;margin:0 0 8px;}
+  .way p{font-size:14.5px;color:#a9c7b6;margin:0 0 20px;line-height:1.55;}
+  .way .btn{margin-top:auto;align-self:flex-start;font-size:13.5px;padding:10px 17px;}
+  /* stands in where a card has no form to link to */
+  .way-note{margin-top:auto;margin-bottom:0;font-family:"IBM Plex Mono",monospace;
+    font-size:11.5px;letter-spacing:.06em;line-height:1.55;color:#8fae9c;}
+  .ways .btn.is-pending{background:rgba(255,255,255,.05);color:#8fae9c;
+    border-color:rgba(255,255,255,.16);}
+  .ways .btn.is-pending .arr{display:none;}
+
+  .dates{list-style:none;padding:0;margin:18px 0 0;}
+  .dates li{display:flex;gap:20px;align-items:baseline;padding:14px 0;
+    border-bottom:1px dashed var(--line);flex-wrap:wrap;}
+  .dates li:last-child{border-bottom:none;}
+  .dates .d{font-family:"IBM Plex Mono",monospace;font-weight:500;color:var(--forest);
+    min-width:148px;font-size:14px;}
+  .dates li.is-event{background:var(--fog);margin:6px -14px 0;padding:16px 14px;border-bottom:none;}
+  .dates li.is-event .l{font-weight:600;color:var(--ink);}
+
+  /* ---------- history: a horizontal rail along a single baseline ----------
+     Twelve editions never fit the main column at a readable size, so the rail
+     scrolls sideways. The scrollbar is styled rather than hidden — it is the
+     only affordance telling you there is more to the right. */
+  /* fade the right edge while there is more rail to scroll to */
+  .tl-wrap{position:relative;}
+  .tl-wrap::after{content:"";position:absolute;top:0;bottom:14px;right:0;width:72px;
+    pointer-events:none;transition:opacity .2s ease;
+    background:linear-gradient(90deg,rgba(245,248,244,0),var(--paper) 78%);}
+  .tl-wrap.at-end::after{opacity:0;}
+  .tl{list-style:none;display:flex;margin:28px 0 0;padding:0 0 14px;
+    overflow-x:auto;overscroll-behavior-x:contain;}
+  .tl li{position:relative;flex:0 0 112px;padding:44px 16px 0 0;}
+  .tl li::before{content:"";position:absolute;left:6px;right:0;top:29px;height:1.5px;
+    background:var(--line);}
+  .tl li:last-child::before{display:none;}
+  .tl li::after{content:"";position:absolute;left:0;top:24px;width:12px;height:12px;
+    border-radius:50%;background:var(--paper);border:2px solid var(--forest);}
+  .tl .y{position:absolute;top:0;left:0;font-family:"IBM Plex Mono",monospace;
+    font-weight:600;color:var(--gold-ink);font-size:14px;}
+  .tl .host{display:block;font-family:"Newsreader",Georgia,serif;font-size:16.5px;
+    line-height:1.28;color:var(--ink);}
+  .tl li.now::after{background:var(--gold);border-color:var(--gold);
+    box-shadow:0 0 0 4px rgba(192,138,38,.18);}
+  .tl li.now .host,.tl li.now .y{font-weight:600;}
+  .tl::-webkit-scrollbar{height:7px;}
+  .tl::-webkit-scrollbar-track{background:var(--fog);border-radius:4px;}
+  .tl::-webkit-scrollbar-thumb{background:#c3d0c6;border-radius:4px;}
+  .tl::-webkit-scrollbar-thumb:hover{background:#a9bbaf;}
+
+  /* ---------- organizers ---------- */
+  .orgs{display:flex;flex-wrap:wrap;gap:20px 40px;margin-top:24px;}
+  .org{display:flex;gap:15px;align-items:center;}
+  .org .av{width:50px;height:50px;border-radius:50%;background:var(--forest);color:var(--gold-lt);
+    display:flex;align-items:center;justify-content:center;font-family:"IBM Plex Mono",monospace;
+    font-weight:600;font-size:15px;flex:none;letter-spacing:.04em;}
+  .org .who{font-weight:600;color:var(--ink);font-size:16.5px;}
+  .org .aff{color:var(--muted);font-size:14px;}
+  .org .role{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold-ink);margin-top:3px;}
+
+  /* ---------- venue ---------- */
+  #venue .lead{margin-bottom:10px;}
+  .venue-addr{color:var(--muted);font-size:15.5px;margin-bottom:14px;}
+
+  /* ==========================================================================
+     SIDEBAR
+     ========================================================================== */
+  aside{position:sticky;top:calc(var(--nav-h) + 20px);display:flex;flex-direction:column;gap:13px;}
+  .side-card{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:19px 21px;}
+  .side-card.dark{background:var(--forest-deep);border-color:var(--forest);color:#d5e7dd;}
+  .side-card h3{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.17em;
+    text-transform:uppercase;color:var(--gold-ink);margin:0 0 11px;font-weight:600;}
+  .side-card.dark h3{color:var(--gold-lt);}
+  .side-card .big{font-family:"Newsreader",Georgia,serif;font-size:25px;font-weight:500;
+    line-height:1.14;color:var(--ink);}
+  .side-card.dark .big{color:#fff;}
+  .side-card .small{font-size:14px;color:var(--muted);margin-top:5px;}
+  .side-card.dark .small{color:#a9c7b6;}
+  .side-card .btn{width:100%;justify-content:center;margin-top:13px;}
+  /* stroked icons, matching the page's hairline detailing */
+  .ico{width:19px;height:19px;flex:none;stroke:var(--forest);stroke-width:1.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round;}
+  .card-row{display:flex;gap:11px;align-items:flex-start;}
+  .card-row .ico{margin-top:2px;}
+
+  /* calendar-style date block */
+  .datecard{border:1px solid var(--line);border-radius:5px;overflow:hidden;background:var(--card);}
+  .datecard-top{background:var(--forest-deep);color:var(--gold-lt);text-align:center;
+    padding:12px 8px;font-family:"Newsreader",Georgia,serif;font-size:27px;font-weight:600;
+    line-height:1;letter-spacing:-.01em;}
+  .datecard-body{text-align:center;padding:11px 8px 13px;}
+  .datecard-body .y{font-family:"IBM Plex Mono",monospace;font-size:15px;
+    letter-spacing:.14em;color:var(--ink);}
+  .datecard-body .d{font-size:12.5px;color:var(--muted);margin-top:4px;}
+
+  /* topics as an icon grid rather than text pills */
+  .topics-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+  .topic{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;
+    background:var(--fog);border:1px solid var(--line);border-radius:4px;padding:13px 6px;
+    font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.06em;
+    color:#33423a;line-height:1.2;transition:border-color .16s ease;}
+  .topic:hover{border-color:var(--forest);}
+  .topic .ico{width:21px;height:21px;}
+
+  /* ==========================================================================
+     FOOTER
+     ========================================================================== */
+  footer{background:var(--forest-deep);color:#a9c7b6;padding:40px 0;font-size:14.5px;}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:baseline;}
+  footer a{color:#dcece3;}
+  footer a:hover{color:var(--gold-lt);}
+  footer .brandmark{display:block;margin-bottom:6px;}
+
+  /* ==========================================================================
+     RESPONSIVE
+     ========================================================================== */
+  @media(max-width:980px){
+    /* minmax(0,1fr), not 1fr: a bare 1fr floors the column at its min-content,
+       and the horizontal history rail then stretches the whole page sideways
+       instead of scrolling inside itself */
+    .layout{grid-template-columns:minmax(0,1fr);gap:44px;padding:56px 0 68px;}
+    aside{position:static;flex-direction:row;flex-wrap:wrap;}
+    aside .side-card{flex:1 1 232px;}
+  }
+  @media(max-width:900px){
+    .nav ul:not(.mnav ul){display:none;}
+    .mnav{display:block;}
+    .hero-body{padding:40px 0 62px;}
+  }
+  @media(max-width:700px){
+    main > section{margin-bottom:56px;}
+  }
+  /* stack the schedule instead of squeezing a 132px time column into a phone */
+  @media(max-width:620px){
+    /* 16 names wrap to ~5 rows on a phone and shove the hero copy off-screen */
+    .hero-names{display:none;}
+    .ways{grid-template-columns:1fr;padding:24px;}
+    .way{padding:20px 0;border-left:none;border-top:1px solid rgba(237,200,121,.20);}
+    .way:first-child{padding-top:0;border-top:none;}
+    .way:last-child{padding-bottom:0;}
+    .sched thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
+    .sched tbody tr{display:block;border-bottom:1px solid var(--line);padding:14px 0;}
+    .sched th[scope="row"],.sched td{display:block;border:none;padding:0;width:auto;}
+    .sched th[scope="row"]{margin-bottom:4px;color:var(--gold-ink);}
+    .dates .d{min-width:100%;}
+    .org{width:100%;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+    .btn:hover{transform:none;}
+  }
+
+  /* ---------- print: people print the schedule ---------- */
+  @media print{
+    .nav,.hero::after,.skyline,.hero-cta,aside,.skip{display:none !important;}
+    body{background:#fff;color:#000;font-size:11pt;}
+    .hero{background:#fff !important;color:#000;}
+    .hero h1,.hero-sub,.chip{color:#000 !important;}
+    .chip{border-color:#999;background:none;}
+    .hero h1 .yr{color:#555 !important;}
+    .layout{display:block;padding:0;}
+    main > section{margin-bottom:24px;page-break-inside:avoid;}
+    a[href^="http"]::after{content:" (" attr(href) ")";font-size:8.5pt;color:#555;word-break:break-all;}
+    footer{background:#fff;color:#000;border-top:1px solid #999;}
+  }
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- icon sprite for the sidebar; stroked to match the page's hairline detailing -->
+<svg class="sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7.5" ry="3"/><path d="M4.5 6v12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3V6"/><path d="M4.5 12c0 1.7 3.4 3 7.5 3s7.5-1.3 7.5-3"/></symbol>
+  <symbol id="i-sys" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5.5" rx="1.5"/><rect x="3" y="14.5" width="18" height="5.5" rx="1.5"/><path d="M6.5 6.75h.01M6.5 17.25h.01"/></symbol>
+  <symbol id="i-ml" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.2"/><circle cx="19" cy="9" r="2.2"/><circle cx="9" cy="18" r="2.2"/><path d="M7 7.2 17 8.2M6.4 7.9 8.2 15.9M17.6 10.7 10.7 16.6"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M6.5 18h11a3.5 3.5 0 0 0 .4-7 5.2 5.2 0 0 0-10-1.3A3.9 3.9 0 0 0 6.5 18Z"/></symbol>
+  <symbol id="i-query" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16"/><path d="M7 20v-6M12 20V6M17 20v-9"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-3 8.1-7 9.5-4-1.4-7-5.1-7-9.5V6l7-3Z"/></symbol>
+  <symbol id="i-theory" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="10" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M9 21h6"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></symbol>
+</svg>
+
+<header class="hero">
+  <!--
+    Silicon Valley skyline. Three depth planes (far ridge / mid ridge / near
+    city) give the horizon aerial perspective instead of one flat silhouette,
+    and lit windows keep the near plane from reading as a solid block. Detail is
+    weighted right of centre because the headline and sub-headline sit over the
+    left. Company names are scattered only through sky that no hero text crosses.
+    aria-hidden: this is illustration, not content.
+  -->
+  <svg class="skyline" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMax meet" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#f7e2ae" stop-opacity="0.40"/>
+        <stop offset="42%" stop-color="#dda44a" stop-opacity="0.14"/>
+        <stop offset="100%" stop-color="#dda44a" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="ridgeFar" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#40795a"/><stop offset="100%" stop-color="#2b5742"/>
+      </linearGradient>
+      <linearGradient id="ridgeMid" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#24503e"/><stop offset="100%" stop-color="#173d2d"/>
+      </linearGradient>
+      <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0c2418"/><stop offset="100%" stop-color="#07180f"/>
+      </linearGradient>
+      <linearGradient id="bay" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1b4936"/><stop offset="100%" stop-color="#0b2318"/>
+      </linearGradient>
+    </defs>
+
+    <!-- ============ SKY ============ -->
+    <ellipse cx="930" cy="306" rx="320" ry="180" fill="url(#sunGlow)"/>
+    <circle cx="930" cy="298" r="32" fill="#f7e2ae" opacity="0.26"/>
+
+    <!-- ============ RIDGES — three planes for aerial perspective ============ -->
+    <path d="M0,350 C120,320 250,338 380,324 C520,308 660,342 800,318
+             C930,296 1060,324 1200,306 L1200,560 L0,560 Z" fill="url(#ridgeFar)" opacity=".5"/>
+    <path d="M0,384 C150,358 300,380 460,364 C640,346 800,382 960,358
+             C1080,340 1150,366 1200,358 L1200,560 L0,560 Z" fill="url(#ridgeMid)" opacity=".88"/>
+
+    <!-- ============ BAY ============ -->
+    <rect x="0" y="396" width="300" height="56" fill="url(#bay)"/>
+    <g stroke="#7fb59a" stroke-opacity=".14" stroke-width="1.5" stroke-linecap="round">
+      <path d="M26,410 h80"/><path d="M134,418 h92"/><path d="M42,428 h66"/>
+      <path d="M152,436 h98"/>
+    </g>
+
+    <!-- ============ GOLDEN GATE — two towers, sagging main cable, hangers ============ -->
+    <g stroke="#c05a22" fill="none" stroke-linecap="round" opacity=".8">
+      <!-- main cable: anchored low at the edges, over both towers, sagging between -->
+      <path d="M0,336 L62,268 C104,320 148,320 190,268 L268,352" stroke-width="2.8"/>
+      <g stroke-width="1" stroke-opacity=".75">
+        <line x1="20" y1="392" x2="20" y2="314"/><line x1="40" y1="392" x2="40" y2="292"/>
+        <line x1="84"  y1="392" x2="84"  y2="300"/><line x1="106" y1="392" x2="106" y2="312"/>
+        <line x1="126" y1="392" x2="126" y2="316"/><line x1="146" y1="392" x2="146" y2="312"/>
+        <line x1="168" y1="392" x2="168" y2="300"/>
+        <line x1="212" y1="392" x2="212" y2="296"/><line x1="234" y1="392" x2="234" y2="318"/>
+      </g>
+    </g>
+    <g fill="#c05a22" opacity=".8">
+      <rect x="0" y="388" width="300" height="4.5"/>
+      <rect x="57" y="262" width="9" height="130"/>
+      <rect x="52" y="286" width="19" height="4"/><rect x="52" y="316" width="19" height="4"/>
+      <rect x="186" y="262" width="9" height="130"/>
+      <rect x="181" y="286" width="19" height="4"/><rect x="181" y="316" width="19" height="4"/>
+    </g>
+
+    <!-- ============ FOREGROUND ============ -->
+    <path d="M0,440 C180,428 340,446 520,436 C700,426 860,444 1020,434
+             C1110,428 1160,438 1200,434 L1200,560 L0,560 Z" fill="url(#ground)"/>
+
+    <!-- ============ SAN FRANCISCO — far plane, lighter for distance ============ -->
+    <g fill="#143527">
+      <path d="M258,440 L258,306 Q266,288 274,306 L274,440 Z"/>
+      <path d="M284,440 L296,292 L308,440 Z"/>
+      <rect x="314" y="356" width="13" height="84" rx="1"/>
+      <rect x="332" y="372" width="11" height="68" rx="1"/>
+      <rect x="242" y="382" width="12" height="58" rx="1"/>
+    </g>
+
+    <!-- ============ STANFORD — Hoover Tower ============ -->
+    <g fill="#0f2a1e">
+      <rect x="392" y="326" width="14" height="114" rx="1"/>
+      <rect x="388" y="314" width="22" height="14" rx="1"/>
+      <path d="M388,314 L399,298 L410,314 Z"/>
+    </g>
+    <g fill="#f0cf86" opacity=".45">
+      <rect x="396" y="342" width="3" height="4"/><rect x="402" y="342" width="3" height="4"/>
+      <rect x="396" y="360" width="3" height="4"/><rect x="402" y="360" width="3" height="4"/>
+    </g>
+
+    <!-- ============ APPLE PARK — the ring ============ -->
+    <ellipse cx="510" cy="420" rx="64" ry="15.5" fill="none" stroke="#1c4632" stroke-width="9"/>
+    <ellipse cx="510" cy="420" rx="64" ry="15.5" fill="none" stroke="#4a8a64" stroke-width="1.3" opacity=".75"/>
+    <ellipse cx="510" cy="420" rx="55" ry="10" fill="none" stroke="#4a8a64" stroke-width=".8" opacity=".35"/>
+
+    <!-- ============ CAMPUS BLOCKS — Menlo Park / Mountain View ============ -->
+    <g fill="#0a2016">
+      <rect x="606" y="408" width="34" height="32" rx="3"/>
+      <rect x="646" y="396" width="30" height="44" rx="3"/>
+      <rect x="682" y="414" width="26" height="26" rx="3"/>
+    </g>
+    <g fill="#f0cf86" opacity=".4">
+      <rect x="612" y="416" width="3" height="3"/><rect x="620" y="416" width="3" height="3"/>
+      <rect x="628" y="416" width="3" height="3"/><rect x="652" y="404" width="3" height="3"/>
+      <rect x="660" y="404" width="3" height="3"/><rect x="652" y="416" width="3" height="3"/>
+      <rect x="688" y="422" width="3" height="3"/><rect x="696" y="422" width="3" height="3"/>
+    </g>
+
+    <!-- ============ SANTA CLARA — triangular roofline ============ -->
+    <path d="M742,440 L742,382 L764,356 L786,382 L808,356 L830,382 L830,440 Z" fill="#0a2016"/>
+    <path d="M742,382 L764,356 L786,382 M786,382 L808,356 L830,382"
+          fill="none" stroke="#2f6749" stroke-width="1.2"/>
+    <g fill="#f0cf86" opacity=".4">
+      <rect x="752" y="402" width="3" height="3"/><rect x="762" y="402" width="3" height="3"/>
+      <rect x="796" y="402" width="3" height="3"/><rect x="812" y="402" width="3" height="3"/>
+      <rect x="752" y="418" width="3" height="3"/><rect x="796" y="418" width="3" height="3"/>
+    </g>
+
+    <!-- ============ REDWOOD SHORES — cylindrical towers ============ -->
+    <g fill="#0a2016">
+      <path d="M862,440 v-72 a8,8 0 0,1 16,0 v72 z"/>
+      <path d="M886,440 v-94 a8,8 0 0,1 16,0 v94 z"/>
+      <path d="M910,440 v-64 a8,8 0 0,1 16,0 v64 z"/>
+      <path d="M934,440 v-102 a8,8 0 0,1 16,0 v102 z"/>
+      <path d="M958,440 v-78 a8,8 0 0,1 16,0 v78 z"/>
+    </g>
+    <g fill="#f0cf86" opacity=".38">
+      <rect x="868" y="386" width="3" height="3"/><rect x="892" y="364" width="3" height="3"/>
+      <rect x="892" y="390" width="3" height="3"/><rect x="916" y="396" width="3" height="3"/>
+      <rect x="940" y="358" width="3" height="3"/><rect x="940" y="388" width="3" height="3"/>
+      <rect x="964" y="380" width="3" height="3"/>
+    </g>
+
+    <!-- ============ SAN JOSE — downtown cluster ============ -->
+    <g fill="#0a2016">
+      <rect x="1004" y="396" width="20" height="44" rx="1"/>
+      <rect x="1028" y="362" width="24" height="78" rx="1"/>
+      <rect x="1056" y="408" width="18" height="32" rx="1"/>
+      <rect x="1078" y="378" width="26" height="62" rx="1"/>
+      <rect x="1108" y="400" width="20" height="40" rx="1"/>
+      <rect x="1132" y="354" width="26" height="86" rx="1"/>
+      <rect x="1162" y="390" width="22" height="50" rx="1"/>
+    </g>
+    <g fill="#f0cf86" opacity=".42">
+      <rect x="1010" y="406" width="3" height="3"/><rect x="1018" y="406" width="3" height="3"/>
+      <rect x="1034" y="374" width="3" height="3"/><rect x="1044" y="374" width="3" height="3"/>
+      <rect x="1034" y="396" width="3" height="3"/><rect x="1044" y="414" width="3" height="3"/>
+      <rect x="1084" y="390" width="3" height="3"/><rect x="1094" y="390" width="3" height="3"/>
+      <rect x="1084" y="410" width="3" height="3"/><rect x="1114" y="412" width="3" height="3"/>
+      <rect x="1138" y="366" width="3" height="3"/><rect x="1148" y="366" width="3" height="3"/>
+      <rect x="1138" y="390" width="3" height="3"/><rect x="1148" y="410" width="3" height="3"/>
+      <rect x="1168" y="402" width="3" height="3"/><rect x="1176" y="402" width="3" height="3"/>
+    </g>
+  </svg>
+
+  <div id="nav-top"></div>
+  <nav class="nav" id="nav" aria-label="Main">
+    <div class="wrap">
+      <span class="brandmark">NorCal DB <span class="est">· Est. 2011</span></span>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#program">Program</a></li>
+        <li><a href="#participate">Participate</a></li>
+        <li><a href="#dates">Dates</a></li>
+        <li><a href="#register">Register</a></li>
+        <li><a href="#venue">Venue</a></li>
+        <li><a href="#history">History</a></li>
+        <li><a href="#organizers">Organizers</a></li>
+      </ul>
+      <details class="mnav">
+        <summary>Menu</summary>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#program">Program</a></li>
+          <li><a href="#participate">Participate</a></li>
+          <li><a href="#dates">Dates</a></li>
+          <li><a href="#register">Register</a></li>
+          <li><a href="#venue">Venue</a></li>
+          <li><a href="#history">History</a></li>
+          <li><a href="#organizers">Organizers</a></li>
+        </ul>
+      </details>
+    </div>
+  </nav>
+
+  <!--
+    The community the day draws from, scattered across the sky like the
+    original word cloud. It lives in its own reserved band between the nav
+    and the hero copy rather than inside the SVG: the skyline scales with
+    viewport width while the hero height is content-driven, so anything
+    parked in its sky slid down onto the headline at narrower widths.
+    Percentage offsets keep the scatter proportional at every size.
+  -->
+  <div class="hero-names" aria-hidden="true">
+    <span style="left:2%;top:2%;--r:-3deg;font-size:1.08em;opacity:.34">UC Berkeley</span>
+    <span style="left:28%;top:0%;--r:2deg;font-size:1.00em;opacity:.30">Stanford</span>
+    <span style="left:50%;top:4%;--r:-2deg;font-size:1.15em;opacity:.36">UC Santa Cruz</span>
+    <span style="left:80%;top:1%;--r:3deg;font-size:1.08em;opacity:.33">Microsoft</span>
+    <span style="left:86%;top:16%;--r:-2deg;font-size:1.00em;opacity:.29">Databricks</span>
+    <span style="left:76%;top:26%;--r:2deg;font-size:1.00em;opacity:.28">LinkedIn</span>
+    <span style="left:88%;top:38%;--r:-3deg;font-size:1.08em;opacity:.32">Amazon</span>
+    <span style="left:64%;top:46%;--r:3deg;font-size:1.00em;opacity:.29">IBM Almaden</span>
+    <span style="left:84%;top:54%;--r:-3deg;font-size:1.00em;opacity:.28">Snowflake</span>
+    <span style="left:68%;top:64%;--r:2deg;font-size:1.00em;opacity:.30">Oracle</span>
+    <span style="left:3%;top:47%;--r:3deg;font-size:1.00em;opacity:.30">UC Davis</span>
+    <span style="left:24%;top:44%;--r:-2deg;font-size:1.15em;opacity:.34">Google</span>
+    <span style="left:44%;top:49%;--r:2deg;font-size:1.08em;opacity:.32">Apple</span>
+    <span style="left:90%;top:74%;--r:-2deg;font-size:1.00em;opacity:.28">Meta</span>
+    <span style="left:60%;top:78%;--r:3deg;font-size:1.08em;opacity:.31">NVIDIA</span>
+    <span style="left:74%;top:88%;--r:-2deg;font-size:1.00em;opacity:.29">Intel</span>
+  </div>
+
+  <div class="hero-body">
+    <div class="wrap">
+      <div class="eyebrow on-dark rise">Northern California Database Day</div>
+      <h1 class="rise">NorCal DB Day <span class="yr">2026</span></h1>
+      <div class="hero-host rise">@ <span data-f="venue"></span></div>
+      <div class="hero-rule rise"></div>
+      <p class="hero-sub rise">A free, single-day gathering of the Northern California data-systems community &mdash; academia and industry, together for a day of talks, a gong show, and posters.</p>
+      <div class="hero-meta rise">
+        <span class="chip"><b>WHEN</b> <span data-f="date">&nbsp;</span></span>
+        <span class="chip"><b>COST</b> Free</span>
+      </div>
+      <div class="hero-cta rise">
+        <a class="btn btn-primary" data-f="regLink" href="#register">Register to attend <span class="arr">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#program">See the program</a>
+        <span class="hero-note">Free &middot; registration required &middot; in person</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="layout">
+
+  <main id="main">
+
+    <!-- ==================== ABOUT ==================== -->
+    <section id="about">
+      <div class="eyebrow">About</div>
+      <h2 class="section-title">The whole NorCal community, in a day</h2>
+      <p class="lead">NorCal DB Day is a free, single-day, workshop-style event where researchers and practitioners from academia and industry across Northern California meet to present ideas and discuss their research and experiences.</p>
+      <p>The day is deliberately informal and community-first: invited talks from leaders in data management, a fast-paced <em>gong show</em> of short updates from groups across the region, and a poster session over lunch. It&rsquo;s a chance to see what everyone is working on, reconnect with the community, and meet the next generation of database researchers.</p>
+      <p>There is no paper submission and no proceedings. Nothing you present here is published, so bring work in progress.</p>
+    </section>
+
+    <!-- ==================== PROGRAM ==================== -->
+    <section id="program">
+      <div class="eyebrow">Program</div>
+      <h2 class="section-title">Schedule</h2>
+      <!--
+        SCHEDULE — edit rows here.
+
+        Each row is:  <th scope="row">TIME</th>  +  a <td> holding, in order:
+          .ev          the talk title      (add .key to badge it as a keynote)
+          .ev-speaker  Name, Affiliation   (semicolons between groups)
+          .ev-sub      an optional descriptive line
+          details.abs  an optional abstract, collapsed until clicked
+
+        A filled row looks like this — copy it and drop in the real details:
+
+        <tr>
+          <th scope="row">11:30 &ndash; 11:50</th>
+          <td>
+            <span class="ev">Inference-Aware Deletions in Databases</span>
+            <span class="ev-speaker">Vishal Chakraborty (UC Irvine); Youri Kaminsky (HPI)</span>
+            <details class="abs"><summary>Abstract</summary>
+              <p>One or two paragraphs of abstract text.</p></details>
+          </td>
+        </tr>
+      -->
+      <table class="sched">
+        <caption>Tentative schedule &mdash; the full program, with speakers, is announced closer to the event. Times are subject to change.</caption>
+        <thead><tr><th scope="col">Time</th><th scope="col">Session</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">8:30 &ndash; 9:00</th>
+            <td><span class="ev brk">&#9749; Registration &amp; breakfast</span>
+              <span class="ev-sub">Coffee, pastries, and hellos</span></td></tr>
+
+          <tr><th scope="row">9:00 &ndash; 9:15</th>
+            <td><span class="ev">Welcome &amp; opening remarks</span></td></tr>
+
+          <tr><th scope="row">9:15 &ndash; 10:15</th>
+            <td><span class="ev key">Keynote 1</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span>
+              <details class="abs"><summary>Abstract</summary>
+                <p>Posted once the keynote is confirmed.</p></details></td></tr>
+
+          <tr><th scope="row">10:15 &ndash; 11:00</th>
+            <td><span class="ev">Gong show, part I</span>
+              <span class="ev-sub">Rapid-fire updates from groups across Northern California</span></td></tr>
+
+          <tr><th scope="row">11:00 &ndash; 11:30</th>
+            <td><span class="ev brk">&#9749; Coffee break</span></td></tr>
+
+          <tr><th scope="row">11:30 &ndash; 11:50</th>
+            <td><span class="ev">Invited talk</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
+
+          <tr><th scope="row">11:50 &ndash; 12:10</th>
+            <td><span class="ev">Invited talk</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
+
+          <tr><th scope="row">12:10 &ndash; 12:30</th>
+            <td><span class="ev">Invited talk</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
+
+          <tr><th scope="row">12:30 &ndash; 2:00</th>
+            <td><span class="ev brk">&#127869; Lunch &amp; poster session</span>
+              <span class="ev-sub">Posters from students, postdocs, and industry teams</span></td></tr>
+
+          <tr><th scope="row">2:00 &ndash; 2:20</th>
+            <td><span class="ev">Invited talk</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
+
+          <tr><th scope="row">2:20 &ndash; 2:40</th>
+            <td><span class="ev">Invited talk</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
+
+          <tr><th scope="row">2:40 &ndash; 3:00</th>
+            <td><span class="ev">Invited talk</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
+
+          <tr><th scope="row">3:00 &ndash; 3:45</th>
+            <td><span class="ev">Gong show, part II</span></td></tr>
+
+          <tr><th scope="row">3:45 &ndash; 4:15</th>
+            <td><span class="ev brk">&#9749; Coffee break</span></td></tr>
+
+          <tr><th scope="row">4:15 &ndash; 5:15</th>
+            <td><span class="ev key">Keynote 2</span>
+              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span>
+              <details class="abs"><summary>Abstract</summary>
+                <p>Posted once the keynote is confirmed.</p></details></td></tr>
+
+          <tr><th scope="row">5:15 &ndash; 5:30</th>
+            <td><span class="ev">Closing remarks</span></td></tr>
+
+          <tr><th scope="row">5:30 &rarr;</th>
+            <td><span class="ev brk">&#127866; Reception</span>
+              <span class="ev-sub">Drinks and conversation, on site</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ==================== PARTICIPATE ==================== -->
+    <section id="participate">
+      <div class="eyebrow">Take part</div>
+      <h2 class="section-title">Three ways in</h2>
+      <p>NorCal DB Day runs on contributions from the community. Pick whichever fits how much you want to say. Gong-show slots and posters go through a short selection process &mdash; we confirm who is presenting before the program is announced.</p>
+      <div class="ways">
+        <div class="way">
+          <span class="tag">2 minutes</span>
+          <h3>Gong show</h3>
+          <p>A slide or two on what your group is working on. Fast, informal, and the best way to survey the whole region in an hour.</p>
+          <p class="way-note">Email for more information</p>
+        </div>
+        <div class="way">
+          <span class="tag">90 minutes</span>
+          <h3>Poster</h3>
+          <p>Stand by your poster over lunch. Ideal for students and postdocs looking for feedback and connections.</p>
+          <a class="btn btn-ghost" data-f="posterBtn" href="#participate">Submit a poster <span class="arr">&rarr;</span></a>
+        </div>
+        <div class="way">
+          <span class="tag">All day</span>
+          <h3>Just attend</h3>
+          <p>Come for the talks and the people. Attendance is free; we ask you to register so we can plan catering and space.</p>
+          <a class="btn btn-ghost" data-f="regLink" href="#register">Register to attend <span class="arr">&rarr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DATES ==================== -->
+    <section id="dates">
+      <div class="eyebrow">Important dates</div>
+      <h2 class="section-title">Key deadlines</h2>
+      <ul class="dates">
+        <li><span class="d" data-f="dOpen"></span><span class="l">Registration opens</span></li>
+        <li><span class="d" data-f="dSignup"></span><span class="l">Gong-show &amp; poster sign-up closes</span></li>
+        <li><span class="d" data-f="dProgram"></span><span class="l">Program announced</span></li>
+        <li><span class="d" data-f="dClose"></span><span class="l">Registration closes</span></li>
+        <li class="is-event"><span class="d" data-f="dateShort"></span><span class="l">NorCal DB Day 2026</span></li>
+      </ul>
+    </section>
+
+    <!-- ==================== REGISTER ==================== -->
+    <section id="register">
+      <div class="eyebrow">Registration</div>
+      <h2 class="section-title">Attending is free</h2>
+      <p>NorCal DB Day is free to attend thanks to our host. Breakfast, lunch, and coffee breaks are included. Space is limited, so please register even if you are only coming for part of the day &mdash; it is how we size the room and the catering.</p>
+      <p>The form takes about a minute. Tell us there about dietary needs and any accessibility requirements, and we will follow up.</p>
+      <p style="margin-top:22px;display:flex;gap:12px;flex-wrap:wrap;">
+        <a class="btn btn-primary" data-f="regLink" href="#register">Open the registration form <span class="arr">&rarr;</span></a>
+        <a class="btn btn-outline" id="ics" href="#register">Add to calendar</a>
+      </p>
+    </section>
+
+    <!-- ==================== VENUE ==================== -->
+    <section id="venue">
+      <div class="eyebrow">Getting there</div>
+      <h2 class="section-title">Venue</h2>
+      <p class="lead"><span data-f="venueRoom"></span><br><span data-f="venue"></span></p>
+      <p class="venue-addr" data-f="venueAddr"></p>
+      <p data-f="mapLink"></p>
+    </section>
+
+    <!-- ==================== HISTORY / EDITIONS ==================== -->
+    <section id="history">
+      <div class="eyebrow">History</div>
+      <h2 class="section-title">Fifteen years of NorCal DB</h2>
+      <p class="note">NorCal DB Day has moved between the region&rsquo;s universities and companies since 2011, most recent first.</p>
+      <!-- EDITIONS — add or correct rows here -->
+      <div class="tl-wrap">
+      <ul class="tl">
+        <li class="now"><span class="y">2026</span><span class="host" data-f="venue"></span></li>
+        <li><span class="y">2025</span><span class="host">Oracle</span></li>
+        <li><span class="y">2023</span><span class="host">Microsoft</span></li>
+        <li><span class="y">2019</span><span class="host">LinkedIn</span></li>
+        <li><span class="y">2018</span><span class="host">Oracle</span></li>
+        <li><span class="y">2017</span><span class="host">Amazon</span></li>
+        <li><span class="y">2016</span><span class="host">Google</span></li>
+        <li><span class="y">2015</span><span class="host">UC Santa Cruz</span></li>
+        <li><span class="y">2014</span><span class="host">IBM Almaden</span></li>
+        <li><span class="y">2013</span><span class="host">Stanford</span></li>
+        <li><span class="y">2012</span><span class="host">UC Berkeley</span></li>
+        <li><span class="y">2011</span><span class="host">UC Davis</span></li>
+      </ul>
+      </div>
+    </section>
+
+    <!-- ==================== ORGANIZERS ==================== -->
+    <section id="organizers">
+      <div class="eyebrow">Organizers</div>
+      <h2 class="section-title">Organizing committee</h2>
+      <div class="orgs">
+        <div class="org">
+          <div class="av">ID</div>
+          <div>
+            <div class="who"><a href="https://idemertzis.com">Ioannis Demertzis</a></div>
+            <div class="aff">UC Santa Cruz</div>
+          </div>
+        </div>
+        <div class="org">
+          <div class="av">NT</div>
+          <div>
+            <div class="who"><a href="https://ntzia.github.io/">Nikolaos Tziavelis</a></div>
+            <div class="aff">UC Santa Cruz</div>
+          </div>
+        </div>
+        <div class="org">
+          <div class="av">AM</div>
+          <div>
+            <div class="who"><a href="https://mavrogiannakisap.github.io">Apostolos Mavrogiannakis</a></div>
+            <div class="aff">UC Santa Cruz</div>
+            <div class="role">Student organizer</div>
+          </div>
+        </div>
+      </div>
+      <p class="note" style="margin-top:22px;">Questions about the program, hosting a future edition, or sponsoring lunch? Write to <span data-f="contactLink"></span>.</p>
+    </section>
+
+  </main>
+
+  <!-- ==================== SIDEBAR ==================== -->
+  <aside aria-label="Event details">
+    <div class="side-card dark">
+      <h3>Register</h3>
+      <div class="big">Free to attend</div>
+      <div class="small">Space is limited &mdash; registration required.</div>
+      <a class="btn btn-primary" data-f="regLink" href="#register">Register <span class="arr">&rarr;</span></a>
+    </div>
+    <div class="side-card">
+      <h3>When</h3>
+      <div class="datecard">
+        <div class="datecard-top" data-f="dateMonthDay"></div>
+        <div class="datecard-body">
+          <div class="y" data-f="dateYear"></div>
+          <div class="d">Friday &middot; 8:30am &ndash; 5:30pm</div>
+        </div>
+      </div>
+    </div>
+    <div class="side-card">
+      <h3>Where</h3>
+      <div class="card-row">
+        <svg class="ico"><use href="#i-pin"/></svg>
+        <div>
+          <div class="big" style="font-size:19px;" data-f="venue"></div>
+          <div class="small"><span data-f="venueRoom"></span> &middot; in person only</div>
+          <div class="small" style="margin-top:7px;" data-f="mapLink"></div>
+        </div>
+      </div>
+    </div>
+    <div class="side-card">
+      <h3>Format</h3>
+      <div class="card-row">
+        <svg class="ico"><use href="#i-mic"/></svg>
+        <div class="small" style="margin-top:0;color:var(--body);">Invited talks, a gong show, and a poster session over lunch. No papers, no proceedings.</div>
+      </div>
+    </div>
+    <div class="side-card">
+      <h3>Topics</h3>
+      <div class="topics-grid">
+        <div class="topic"><svg class="ico"><use href="#i-db"/></svg><span>Databases</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-sys"/></svg><span>Systems</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-ml"/></svg><span>ML for data</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-cloud"/></svg><span>Cloud</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-query"/></svg><span>Queries</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-chart"/></svg><span>Analytics</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-shield"/></svg><span>Security</span></div>
+        <div class="topic"><svg class="ico"><use href="#i-theory"/></svg><span>Theory</span></div>
+      </div>
+    </div>
+    <div class="side-card">
+      <h3>Contact</h3>
+      <div class="card-row">
+        <svg class="ico"><use href="#i-mail"/></svg>
+        <div class="small" style="margin-top:0;"><span data-f="contactLink"></span></div>
+      </div>
+    </div>
+  </aside>
+
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <span class="brandmark">NorCal DB Day 2026</span>
+      Northern California Database Day &middot; <span data-f="venueShort"></span>
+    </div>
+    <div>
+      Organized by <a href="https://idemertzis.com">I. Demertzis</a>
+      &amp; <a href="https://ntzia.github.io/">N. Tziavelis</a>, UC Santa Cruz
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================================
+   SITE CONFIG — the only block you need to edit for dates, venue and links.
+   Leave a string empty ("") and the page renders a styled TBD in its place,
+   everywhere it appears. Fill `date` and the schema.org Event markup that
+   search engines read is generated automatically.
+   =========================================================================== */
+const SITE = {
+  regUrl:    "https://docs.google.com/forms/d/e/1FAIpQLSeE5AQRIjNBzptEHg250NMlCI_V8vquqyOlqMtQCDoRIDGNoA/viewform",
+  posterUrl: "https://docs.google.com/forms/d/e/1FAIpQLSddVZST5H_IbOYUv24vZOT6wujOvrvruj0sDPWHSNLxWFCqtA/viewform",
+  contact:   "norcaldb2026@gmail.com",
+
+  date:      "2026-10-16",          // machine-readable — drives the calendar file + Event markup
+  dateLong:  "Friday, October 16, 2026",
+  dateShort: "October 16, 2026",
+  startTime: "08:30",
+  endTime:   "17:30",
+
+  venue:     "UC Santa Cruz",       // short name — hero, sidebar, footer, history row
+  venueRoom: "College Nine & Ten Multipurpose Room",
+  venueCity: "",                    // leave empty: "UC Santa Cruz" already says where
+  venueAddr: "1156 High Street, Santa Cruz, CA 95064",
+  mapUrl:    "https://maps.app.goo.gl/XkaWYxzdpVxfrB7CA",
+
+  dOpen: "", dSignup: "", dProgram: "", dClose: ""
+};
+
+(function () {
+  const TBD = '<span class="tbd">TBD</span>';
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const text = {
+    date:      SITE.dateLong  ? esc(SITE.dateLong)
+             : SITE.dateShort ? esc(SITE.dateShort) : TBD + " 2026",
+    dateShort: SITE.dateShort ? esc(SITE.dateShort) : TBD + " 2026",
+    venue:     SITE.venue     ? esc(SITE.venue) : TBD,
+    venueRoom: SITE.venueRoom ? esc(SITE.venueRoom) : TBD,
+    venueShort:SITE.venue     ? esc(SITE.venue) + (SITE.venueCity ? ", " + esc(SITE.venueCity) : "")
+                              : TBD + " · Bay Area",
+    venueAddr: SITE.venueAddr ? esc(SITE.venueAddr) : TBD,
+    dOpen: SITE.dOpen ? esc(SITE.dOpen) : TBD,
+    dSignup: SITE.dSignup ? esc(SITE.dSignup) : TBD,
+    dProgram: SITE.dProgram ? esc(SITE.dProgram) : TBD,
+    dClose: SITE.dClose ? esc(SITE.dClose) : TBD
+  };
+
+  // Split the ISO string rather than using Date(): new Date("2026-10-16") parses
+  // as UTC midnight, which reads back as Oct 15 in any US timezone.
+  if (SITE.date) {
+    const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const [Y, M, D] = SITE.date.split("-");
+    text.dateMonthDay = MON[+M - 1] + " " + (+D);
+    text.dateYear = Y;
+  } else {
+    text.dateMonthDay = TBD;
+    text.dateYear = "2026";
+  }
+
+  document.querySelectorAll("[data-f]").forEach(el => {
+    const f = el.dataset.f;
+
+    if (f === "regLink") {
+      // Only becomes a real link once a URL exists — never point a CTA at a 404.
+      if (SITE.regUrl) { el.href = SITE.regUrl; el.target = "_blank"; el.rel = "noopener"; }
+      else { el.removeAttribute("href"); el.classList.add("is-pending");
+             el.setAttribute("aria-disabled", "true");
+             el.innerHTML = 'Registration opens soon'; }
+      return;
+    }
+    if (f === "posterBtn") {
+      const url = SITE.posterUrl;
+      if (url) { el.href = url; el.target = "_blank"; el.rel = "noopener"; }
+      else { el.removeAttribute("href"); el.classList.add("is-pending");
+             el.setAttribute("aria-disabled", "true");
+             el.textContent = "Form coming soon"; }
+      return;
+    }
+    if (f === "mapLink") {
+      if (SITE.mapUrl) {
+        el.innerHTML = '<a href="' + esc(SITE.mapUrl) + '" target="_blank" rel="noopener">'
+                     + 'Open in Google Maps &rarr;</a>';
+      } else { el.innerHTML = TBD; }
+      return;
+    }
+    if (f === "contactLink") {
+      if (SITE.contact) {
+        const inline = el.tagName === "A";
+        if (inline) { el.href = "mailto:" + SITE.contact; }
+        else { el.innerHTML = '<a href="mailto:' + esc(SITE.contact) + '">' + esc(SITE.contact) + '</a>'; }
+      } else if (el.tagName === "A") {
+        el.removeAttribute("href");
+        el.style.color = "var(--muted)";
+      } else {
+        el.innerHTML = TBD;
+      }
+      return;
+    }
+    if (text[f] !== undefined) el.innerHTML = text[f];
+  });
+
+  /* --- schema.org Event: emitted only when the date is real, so we never
+         publish structured data that contradicts the page. --- */
+  if (SITE.date) {
+    const ld = {
+      "@context": "https://schema.org", "@type": "Event",
+      name: "NorCal DB Day 2026",
+      description: "A free, single-day gathering of the Northern California data-systems community.",
+      startDate: SITE.date + "T" + (SITE.startTime || "08:30") + "-07:00",
+      endDate: SITE.date + "T" + SITE.endTime + "-07:00",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      eventStatus: "https://schema.org/EventScheduled",
+      isAccessibleForFree: true,
+      location: {
+        "@type": "Place",
+        name: [SITE.venueRoom, SITE.venue].filter(Boolean).join(", ") || "TBD",
+        address: SITE.venueAddr || SITE.venueCity || "Northern California",
+        hasMap: SITE.mapUrl || undefined,
+        geo: { "@type": "GeoCoordinates", latitude: 37.000769, longitude: -122.057834 }
+      },
+      organizer: { "@type": "Organization", name: "NorCal DB Day" },
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD",
+                availability: "https://schema.org/InStock", url: SITE.regUrl }
+    };
+    const s = document.createElement("script");
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify(ld);
+    document.head.appendChild(s);
+  }
+
+  /* --- .ics download, built from the same SITE fields as everything else --- */
+  const ics = document.getElementById("ics");
+  if (ics) {
+    if (!SITE.date) { ics.remove(); }
+    else {
+      const stamp = (d, t) => d.replace(/-/g, "") + "T" + t.replace(":", "") + "00";
+      const body = [
+        "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//NorCal DB Day//EN", "BEGIN:VEVENT",
+        "UID:norcaldb-2026@norcaldb",
+        "DTSTAMP:" + stamp(SITE.date, "00:00") + "Z",
+        // floating local time — no Z, so it lands at 8:30am wherever the reader is
+        "DTSTART:" + stamp(SITE.date, SITE.startTime || "08:30"),
+        "DTEND:" + stamp(SITE.date, SITE.endTime || "17:30"),
+        "SUMMARY:NorCal DB Day 2026",
+        "LOCATION:" + (SITE.venueAddr || SITE.venue).replace(/,/g, "\\,"),
+        "DESCRIPTION:Northern California Database Day. Register: " + SITE.regUrl,
+        "END:VEVENT", "END:VCALENDAR"
+      ].join("\r\n");
+      ics.href = URL.createObjectURL(new Blob([body], { type: "text/calendar" }));
+      ics.setAttribute("download", "norcaldb-day-2026.ics");
+    }
+  }
+
+  /* --- nav gets a backdrop only once it leaves the hero --- */
+  const sentinel = document.getElementById("nav-top"), nav = document.getElementById("nav");
+  if (sentinel && "IntersectionObserver" in window) {
+    new IntersectionObserver(
+      ([e]) => nav.classList.toggle("is-stuck", !e.isIntersecting),
+      { threshold: 0 }
+    ).observe(sentinel);
+  }
+
+  /* --- history rail: drop the edge fade once you reach the end --- */
+  const rail = document.querySelector(".tl"), railWrap = document.querySelector(".tl-wrap");
+  if (rail && railWrap) {
+    const sync = () => railWrap.classList.toggle(
+      "at-end", rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 2);
+    rail.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    sync();
+  }
+
+})();
+</script>
+
+</body>
+</html>
