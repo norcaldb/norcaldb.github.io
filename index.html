@@ -244,6 +244,9 @@
   .chip b{color:var(--gold-lt);font-weight:600;font-size:16px;letter-spacing:.16em;}
   .hero-cta{margin-top:18px;display:flex;gap:13px;flex-wrap:wrap;align-items:center;}
   .hero-note{font-size:13.5px;color:#cbe2d3;}
+  /* host logo: right end of the CTA row, same height as the buttons */
+  .hero-cta .be-logo{margin-left:auto;height:38px;width:auto;display:block;
+    filter:drop-shadow(0 2px 6px rgba(1,5,3,.7));}
 
   /* page-load stagger */
   @media(prefers-reduced-motion:no-preference){
@@ -434,10 +437,12 @@
      FOOTER
      ========================================================================== */
   footer{background:var(--forest-deep);color:#a9c7b6;padding:40px 0;font-size:14.5px;}
-  footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:baseline;}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:center;}
   footer a{color:#dcece3;}
   footer a:hover{color:var(--gold-lt);}
   footer .brandmark{display:block;margin-bottom:6px;}
+  footer .be-logo{display:block;height:36px;width:auto;opacity:.95;}
+  footer .be-logo:hover{opacity:1;}
 
   /* ==========================================================================
      RESPONSIVE
@@ -454,6 +459,7 @@
     .nav ul:not(.mnav ul){display:none;}
     .mnav{display:block;}
     .hero-body{padding:40px 0 62px;}
+    .hero-cta .be-logo{flex-basis:100%;width:100%;height:28px;margin:6px 0 0;object-fit:contain;object-position:left;}
   }
   @media(max-width:700px){
     main > section{margin-bottom:56px;}
@@ -734,6 +740,7 @@
         <a class="btn btn-primary" data-f="regLink" href="https://forms.gle/EaAibLGaFwa534fR7">Register to attend <span class="arr">&rarr;</span></a>
         <a class="btn btn-ghost" href="#program">See the program</a>
         <span class="hero-note">Registration required &middot; in person</span>
+        <img class="be-logo" src="be-logo.png" alt="UC Santa Cruz Baskin Engineering">
       </div>
     </div>
   </div>
@@ -985,6 +992,9 @@
       Organized by <a href="https://idemertzis.com">I. Demertzis</a>
       &amp; <a href="https://ntzia.github.io/">N. Tziavelis</a>, UC Santa Cruz
     </div>
+    <a href="https://engineering.ucsc.edu" aria-label="UC Santa Cruz Baskin Engineering">
+      <img class="be-logo" src="be-logo.png" alt="UC Santa Cruz Baskin Engineering">
+    </a>
   </div>
 </footer>
 
