@@ -861,7 +861,13 @@
                     <p>In this short talk, I will present the current data management projects performed at UC Merced. These projects are also presented as posters by the leading PhD students.</p>
                   </div>
                 </details></li>
-                <li><span class="t-who">Yannis Demertzis</span><span class="t-aff">, UC Santa Cruz</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Yannis Demertzis</span><span class="t-aff">, UC Santa Cruz</span>
+                    <span class="t-title">Scalable Secure Computation: Databases, Systems, and AI That Leak Nothing</span></summary>
+                  <div class="abs-body">
+                    <p>Encrypting data does not hide what computing on it reveals: access patterns and result sizes are enough for leakage-abuse attacks to recover the plaintext. Hardware enclaves, the industry&rsquo;s practical route to confidential computing, remain exposed to side-channel attacks. Oblivious primitives, combined with enclaves, close both gaps and achieve zero leakage, but until recently they were limited to inputs of 100MB&ndash;4GB. In this talk, I give a quick tour of our oblivious building blocks that scale private computation to terabyte-sized inputs today, and onward to petabytes: key-value stores (used in Signal&rsquo;s contact discovery; SOSP&rsquo;21, PVLDB&rsquo;23, USENIX Security&rsquo;26), sort and shuffle (IEEE S&amp;P&rsquo;24, SOSP&rsquo;26), and relational operators and analytics (USENIX Security&rsquo;25, SOSP&rsquo;26). Together they enable databases, systems, and AI pipelines, from analytics and data clean rooms to private RAG, that leak nothing. Zero leakage holds in the strongest adversarial model; I also discuss when relaxing it is viable: under a more realistic threat model, relaxing obliviousness with respect to a tunable leakage parameter, as in SEAL (USENIX Security&rsquo;20), and selectively applying obliviousness to the most leakage-critical computations can approach plaintext performance while retaining strong security guarantees. Two lightning talks and posters from my group show these systems in action today: Nihal Talur presents SONIC, our highly concurrent, low-latency, high-throughput oblivious key-value store, and Apostolos Mavrogiannakis presents Obliviator and DISCO, which make oblivious databases practical at terabyte scale and beyond.</p>
+                  </div>
+                </details></li>
                 <li><span class="t-who">Sharad Mehrotra</span><span class="t-aff">, UC Irvine</span></li>
               </ul></td></tr>
 
