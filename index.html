@@ -876,8 +876,16 @@
                     <p>The Feldera query engine is an open-source implementation of the DBSP framework described in our 2023 VLDB best paper (Databases as Stream Processors). We describe three classes of challenging, real-world, low-latency applications where this query engine shines: (1) maintaining complex pipelines of tens views defined over tens tables using arbitrarily complex SQL queries, (2) maintaining linear and non-linear mutually recursive views, and (3) maintaining views defined over unbounded but almost-ordered data streams using only bounded state (for some restricted types of queries).</p>
                   </div>
                 </details></li>
-                <li><span class="t-who">Vassilis Ioannidis</span><span class="t-aff">, NTT DATA AIVista</span>
-                  <span class="t-title">Learning Enterprise Semantics for AI-Ready Knowledge Bases</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Vassilis Ioannidis</span><span class="t-aff">, NTT DATA AIVista</span>
+                    <span class="t-title">Learning Enterprise Semantics for AI-Ready Knowledge Bases</span></summary>
+                  <div class="abs-body">
+                    <p>Enterprise agents need shared business concepts, relationships, and rules to interpret information and act consistently across systems. Building an AI-ready knowledge base requires transforming fragmented evidence into reusable, governed knowledge. We examine data ontology construction as a foundation for this challenge.</p>
+                    <p>We present Plexus, an approach to constructing enterprise data ontologies from forms, process documents, reference models, and systems of record. Plexus uses validation-driven iterative optimization: propose semantic structures and mappings, check consistency and grounding, diagnose failures against source evidence, and refine. This loop preserves distinctions such as business roles and requested versus effective state and connects to our broader research on recursive self-improvement.</p>
+                    <p>To study ontology construction systematically, we introduce synthetic ontology environments: known ontologies and consistent synthetic worlds generate complementary form views with field-level provenance. Independently varying evidence availability and presentation enables controlled experiments on recoverable structure, meaning-preserving representations, and the downstream effects of missing distinctions. These environments support evaluation of semantic fidelity and development of learning methods under controlled ambiguity.</p>
+                    <p>We conclude with a research direction toward domain ontology foundation models that learn reusable domain structure from synthetic environments and reviewed corrections while preserving customer-specific meaning. The goal is to reduce expert review at the same audited semantic accuracy and task coverage on unseen customers.</p>
+                  </div>
+                </details></li>
                 <li><span class="t-who">John Chronis</span><span class="t-aff">, ETH Zurich &amp; Google</span></li>
                 <li><span class="t-who">Nihal Talur</span><span class="t-aff">, UC Santa Cruz</span>
                   <span class="t-title">Oblivious Computation at Terabyte Scale: Key-Value Stores</span></li>
