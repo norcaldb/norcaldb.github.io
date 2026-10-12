@@ -294,23 +294,49 @@
   /* breaks recede so the actual talks carry the visual weight */
   .ev.brk{font-family:"IBM Plex Sans",sans-serif;font-size:15px;font-weight:500;color:var(--muted);}
   .ev.brk::after{content:none;}
+  /* breaks, meals and the reception get a light green band so the rhythm of the day
+     is readable at a glance */
+  .sched tr.is-break th[scope="row"],.sched tr.is-break td{background:#dcebdf;
+    border-bottom-color:#c2d8c7;}
+  .sched tr.is-break th[scope="row"]{color:var(--forest);box-shadow:inset 3px 0 0 var(--forest);}
+  .sched tr.is-break .ev.brk{color:var(--forest-deep);font-weight:600;}
+  .sched tr.is-break .ev-sub{color:var(--forest);}
   /* speaker line: names, then affiliations in parentheses */
   .ev-speaker{display:block;margin-top:4px;font-size:14.5px;color:var(--body);}
   .ev-sub{color:var(--muted);font-size:14.5px;display:block;margin-top:3px;}
+  /* speaker leads; the talk title sits under the name */
+  .ev .t-aff{font-family:"IBM Plex Sans",sans-serif;font-weight:400;font-size:14.5px;letter-spacing:0;}
+  .ev-title{display:block;margin-top:4px;font-size:15px;line-height:1.5;color:var(--body);}
 
-  /* abstracts collapse by default — <details> so they work without JS */
-  .abs{margin-top:9px;}
-  .abs summary{display:inline-flex;align-items:center;gap:7px;cursor:pointer;
-    list-style:none;font-family:"IBM Plex Mono",monospace;font-size:10px;
-    letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--gold-ink);
-    background:#fbf3e2;border:1px solid #ecd9ae;border-radius:2px;padding:3px 9px;
-    width:max-content;}
+  /* Talks with an abstract: the title + speaker block is the <summary>, so
+     pressing the talk itself opens the abstract. <details> works without JS. */
+  .abs summary{display:block;position:relative;cursor:pointer;list-style:none;
+    padding-right:30px;}
   .abs summary::-webkit-details-marker{display:none;}
-  .abs summary::after{content:"\25be";font-size:9px;transition:transform .15s ease;}
-  .abs[open] summary::after{transform:rotate(180deg);}
-  .abs summary:hover{background:#f6e8c9;}
-  .abs p{margin:11px 0 0;font-size:14.5px;line-height:1.6;color:var(--body);
-    max-width:64ch;border-left:2px solid var(--line);padding-left:15px;}
+  /* drawn chevron — the \25be glyph rendered as a speck in IBM Plex */
+  .abs summary::after{content:"";position:absolute;right:8px;top:6px;width:8px;height:8px;
+    border-right:2px solid var(--gold-ink);border-bottom:2px solid var(--gold-ink);
+    transform:rotate(45deg);transition:transform .15s ease;}
+  .abs[open] summary::after{transform:translateY(4px) rotate(-135deg);}
+  .abs summary:hover .ev,.abs summary:hover .t-who{color:var(--gold-ink);}
+  .abs-body{margin:11px 0 4px;max-width:64ch;border-left:2px solid var(--line);
+    padding-left:15px;}
+  .abs-body p{margin:0 0 .8em;font-size:14.5px;line-height:1.6;color:var(--body);}
+  .abs-body p:last-child{margin-bottom:0;}
+
+  /* several short talks inside one slot (gong show, lightning talks) */
+  .talks{list-style:none;margin:10px 0 0;padding:0;}
+  .talks li{padding:8px 0;border-top:1px dashed var(--line);font-size:14.5px;}
+  .talks li:last-child{padding-bottom:0;}
+  .t-who{font-weight:600;color:var(--ink);}
+  .t-aff{color:var(--muted);}
+  .t-title{display:block;margin-top:2px;color:var(--body);}
+  .posters{margin-top:18px;}
+  .posters li{padding:12px 0;font-size:15px;}
+  .posters .t-title{margin-top:0;font-weight:600;color:var(--ink);}
+  .posters .p-who{display:block;margin-top:3px;font-size:14.5px;color:var(--body);}
+  .posters .p-who b{font-weight:600;color:var(--ink);}
+  .posters summary:hover .t-title{color:var(--gold-ink);}
 
   /* ==========================================================================
      CARDS / PILLS / DATES
@@ -392,6 +418,9 @@
 
   /* ---------- venue ---------- */
   .venue-addr{color:var(--muted);font-size:15.5px;margin-bottom:14px;}
+  .parking p{max-width:64ch;margin:0 0 .9em;}
+  .parking .btn{margin:4px 0 18px;}
+  .parking .btn:last-child{margin-bottom:0;}
 
   /* ==========================================================================
      SIDEBAR
@@ -475,6 +504,8 @@
     .sched thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);}
     .sched tbody tr{display:block;border-bottom:1px solid var(--line);padding:14px 0;}
     .sched th[scope="row"],.sched td{display:block;border:none;padding:0;width:auto;}
+    .sched tbody tr.is-break{background:#dcebdf;padding:14px 12px;box-shadow:inset 3px 0 0 var(--forest);}
+    .sched tr.is-break th[scope="row"]{box-shadow:none;}
     .sched th[scope="row"]{margin-bottom:4px;color:var(--gold-ink);}
     .dates .d{min-width:100%;}
     .org{width:100%;}
@@ -681,20 +712,20 @@
       <span class="brandmark">NorCal DB</span>
       <ul>
         <li><a href="#about">About</a></li>
+        <li><a href="#program">Program</a></li>
         <li><a href="#history">History</a></li>
         <li><a href="#participate">Participate</a></li>
         <li><a href="#dates">Dates</a></li>
-        <li><a href="#program">Program</a></li>
         <li><a href="#organizers">Organizers</a></li>
       </ul>
       <details class="mnav">
         <summary>Menu</summary>
         <ul>
           <li><a href="#about">About</a></li>
+          <li><a href="#program">Program</a></li>
           <li><a href="#history">History</a></li>
           <li><a href="#participate">Participate</a></li>
           <li><a href="#dates">Dates</a></li>
-              <li><a href="#program">Program</a></li>
           <li><a href="#organizers">Organizers</a></li>
         </ul>
       </details>
@@ -738,7 +769,7 @@
       </div>
       <div class="hero-cta rise">
         <a class="btn btn-primary" data-f="regLink" href="https://forms.gle/EaAibLGaFwa534fR7">Register to attend <span class="arr">&rarr;</span></a>
-        <a class="btn btn-ghost" href="#program">See the program</a>
+        <a class="btn btn-ghost" href="#parking">Parking instructions</a>
         <span class="hero-note">Registration required &middot; in person</span>
         <img class="be-logo" src="be-logo.png" alt="UC Santa Cruz Baskin Engineering">
       </div>
@@ -756,6 +787,170 @@
       <div class="eyebrow">About</div>
       <h2 class="section-title">NorCal DB, in a day</h2>
       <p class="lead">NorCalDB Day is a single-day, workshop-style event where participants from academia and industry in Northern California meet to present ideas and discuss their research and experiences.</p>
+    </section>
+
+    <!-- ==================== PROGRAM ==================== -->
+    <section id="program">
+      <div class="eyebrow">Program</div>
+      <h2 class="section-title">Schedule</h2>
+      <!--
+        SCHEDULE — edit rows here.
+
+        A plain row is:  <th scope="row">TIME</th>  +  a <td> holding
+          .ev          the session title, or the speaker name for a talk   (.brk for breaks)
+          .ev-title    the talk title, under the speaker name
+          .ev-sub      an optional descriptive line
+
+        A talk WITH an abstract wraps title + speaker in <details class="abs">,
+        so pressing the talk opens the abstract:
+
+        <tr>
+          <th scope="row">9:30 &ndash; 10:00</th>
+          <td><details class="abs">
+            <summary><span class="ev">Speaker name<span class="t-aff">, Affiliation</span></span>
+              <span class="ev-title">Talk title</span></summary>
+            <div class="abs-body"><p>Abstract paragraph.</p></div>
+          </details></td>
+        </tr>
+
+        Slots holding several short talks use <ul class="talks">, one <li> each.
+      -->
+      <table class="sched">
+        <thead><tr><th scope="col">Time</th><th scope="col">Session</th></tr></thead>
+        <tbody>
+          <tr class="is-break"><th scope="row">8:00 &ndash; 9:00</th>
+            <td><span class="ev brk">Registration &amp; breakfast</span></td></tr>
+
+          <tr><th scope="row">9:00 &ndash; 9:30</th>
+            <td><span class="ev">Welcome &amp; opening remarks</span></td></tr>
+
+          <tr><th scope="row">9:30 &ndash; 10:00</th>
+            <td><details class="abs">
+              <summary><span class="ev">Joe Hellerstein<span class="t-aff">, UC Berkeley &amp; AWS</span></span>
+                <span class="ev-title">Drowning Heisenbugs with Hydro</span></summary>
+              <div class="abs-body">
+              <p>Most software these days is deployed as a distributed system, with all the classical challenges that database system builders know well: race conditions, data consistency, fault tolerance and so on. The resulting bugs are subtle, non-deterministic, and hard to observe &mdash; what Jim Gray called &ldquo;Heisenbugs&rdquo;. The worldwide population of Heisenbugs is at risk of growing substantially with the rise of LLM-driven coding agents.</p>
+              <p>Hydro is an open source framework for general-purpose distributed systems programming. This talk covers how Hydro promotes distributed correctness in multiple ways. The type system provides &ldquo;distributed safety&rdquo;, preventing large classes of bugs at compile time analogous to Rust&rsquo;s memory safety. It also proves classic replica consistency guarantees in the type system. For other properties, including custom application invariants, a built-in model checker and fuzzer provides principled testing. The two work hand-in-hand: the model checker can prune its state space aggressively to skip tests that are already guaranteed by distributed safety.</p>
+              <p>Importantly, despite its strong correctness guarantees, Hydro is not an abstract spec language; it is a deployment-ready Rust framework that imposes zero cost at runtime. So the correctness guarantees Hydro offers apply to the actual code you deploy, and will not drift as that code evolves.</p>
+              <p>The open source Hydro project is currently a collaboration across AWS, Berkeley and Princeton.</p>
+              </div>
+            </details></td></tr>
+
+          <tr><th scope="row">10:00 &ndash; 10:30</th>
+            <td><details class="abs">
+              <summary><span class="ev">Fatma Ozcan<span class="t-aff">, Google</span></span>
+                <span class="ev-title">From Databases to Semantic Engines: Making AI-Powered Queries Efficient at Scale</span></summary>
+              <div class="abs-body">
+              <p>Large Language Models (LLMs) are turning database systems into semantic engines that reason over structured and unstructured data together, through natural language, AI-powered search, and model-driven operators built into the query itself. Realizing this vision at scale depends on a familiar database challenge in a new form: making intelligence efficient enough to run on every row. Embeddings and similarity search sit at the foundation of this new stack. Because AI operators apply bulk inference across large datasets, they open a new frontier for query optimization. In this talk, we first explore proxy models, lightweight surrogates that approximate expensive AI queries, and present an extensive evaluation of their effectiveness. We then turn to Filtered Vector Search (FVS), a core primitive behind semantic search and Generative AI (GenAI) applications in modern databases. Our central finding challenges conventional wisdom: the best algorithm is not determined by distance-computation cost alone. System-level overheads play a substantial, often decisive, role. Together, these results point toward a new generation of AI-native query optimizers that treat model inference and vector retrieval as first-class, cost-aware operators.</p>
+              </div>
+            </details></td></tr>
+
+          <tr class="is-break"><th scope="row">10:30 &ndash; 10:50</th>
+            <td><span class="ev brk">Coffee break &amp; posters</span></td></tr>
+
+          <tr><th scope="row">10:50 &ndash; 11:50</th>
+            <td><span class="ev">Gong show</span>
+              <span class="ev-sub">Five 10-minute talks from universities in the area</span>
+              <ul class="talks">
+                <li><span class="t-who">Aditya Parameswaran</span><span class="t-aff">, UC Berkeley &amp; Snowflake</span></li>
+                <li><span class="t-who">Nikos Tziavelis</span><span class="t-aff">, UC Santa Cruz</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Florin Rusu</span><span class="t-aff">, UC Merced</span>
+                    <span class="t-title">Data Management Research @ UC Merced</span></summary>
+                  <div class="abs-body">
+                    <p>In this short talk, I will present the current data management projects performed at UC Merced. These projects are also presented as posters by the leading PhD students.</p>
+                  </div>
+                </details></li>
+                <li><span class="t-who">Yannis Demertzis</span><span class="t-aff">, UC Santa Cruz</span></li>
+                <li><span class="t-who">Sharad Mehrotra</span><span class="t-aff">, UC Irvine</span></li>
+              </ul></td></tr>
+
+          <tr><th scope="row">11:50 &ndash; 12:20</th>
+            <td><span class="ev">Lightning talks</span>
+              <span class="ev-sub">Six 5-minute talks</span>
+              <ul class="talks">
+                <li><details class="abs">
+                  <summary><span class="t-who">Mihai Budiu</span><span class="t-aff">, Feldera</span>
+                    <span class="t-title">Eager IVM is a solved problem</span></summary>
+                  <div class="abs-body">
+                    <p>The Feldera query engine is an open-source implementation of the DBSP framework described in our 2023 VLDB best paper (Databases as Stream Processors). We describe three classes of challenging, real-world, low-latency applications where this query engine shines: (1) maintaining complex pipelines of tens views defined over tens tables using arbitrarily complex SQL queries, (2) maintaining linear and non-linear mutually recursive views, and (3) maintaining views defined over unbounded but almost-ordered data streams using only bounded state (for some restricted types of queries).</p>
+                  </div>
+                </details></li>
+                <li><span class="t-who">Vassilis Ioannidis</span><span class="t-aff">, NTT DATA AIVista</span>
+                  <span class="t-title">Learning Enterprise Semantics for AI-Ready Knowledge Bases</span></li>
+                <li><span class="t-who">John Chronis</span><span class="t-aff">, ETH Zurich &amp; Google</span></li>
+                <li><span class="t-who">Nihal Talur</span><span class="t-aff">, UC Santa Cruz</span>
+                  <span class="t-title">Oblivious Computation at Terabyte Scale: Key-Value Stores</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Apostolos Mavrogiannakis</span><span class="t-aff">, UC Santa Cruz</span>
+                    <span class="t-title">Oblivious Computation at Terabyte Scale: Relational Databases</span></summary>
+                  <div class="abs-body">
+                    <p>Trusted execution environments let clients outsource computation to untrusted clouds, but they do not hide memory access patterns, which leakage-abuse and side-channel attacks exploit. Oblivious algorithms close this gap, yet they have struggled to meet the performance and scale of real workloads: until recently, the best oblivious joins were evaluated on megabytes of data. This talk follows two systems that push that limit. Obliviator targets a single shared-memory enclave. It introduces an oblivious aggregation tree and a sort-free parallel expansion algorithm, cuts the oblivious sorts in a non-foreign-key join from five to two, and parallelizes every step, running up to 80× faster than the prior state of the art and scaling to hundreds of gigabytes. DISCO then moves beyond one machine, where communication patterns must be hidden too. By partitioning data vertically instead of horizontally, it lets servers compute in parallel with minimal coordination, outperforms prior distributed oblivious joins by up to 180×, and reports the first results at terabyte scale, up to 16 TB. I close with open problems in oblivious query processing, including complex multi-join queries.</p>
+                  </div>
+                </details></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Agapi Rissaki</span><span class="t-aff">, Northeastern University</span>
+                    <span class="t-title">Database Views as Explanations for Relational Deep Learning</span></summary>
+                  <div class="abs-body">
+                    <p>In recent years, there has been significant progress in the development of deep learning models over relational databases, including architectures based on heterogeneous graph neural networks (hetero-GNNs) and heterogeneous graph transformers. In effect, such architectures state how the database records and links (e.g., foreign-key references) translate into a large, complex numerical expression, involving numerous learnable parameters. This complexity makes it hard to explain, in human-understandable terms, how a model uses the available data to arrive at a given prediction. We present a novel framework for explaining machine-learning models over relational databases, where explanations are view definitions that highlight focused parts of the database that mostly contribute to the model&rsquo;s prediction. We establish such global abductive explanations by adapting the classic notion of determinacy by Nash, Segoufin, and Vianu (2010). In addition to tuning the tradeoff between determinacy and conciseness, the framework allows controlling the level of granularity by adopting different fragments of view definitions, such as ones highlighting whole columns, foreign keys between tables, relevant groups of tuples, and so on. We investigate the realization of the framework in the case of hetero-GNNs, and develop a model-specific approach via the notion of learnable masks. For comparison, we propose model-agnostic heuristic baselines and show that our approach is both more efficient and achieves better explanation quality in most cases. Our extensive empirical evaluation on the RelBench collection across diverse domains and record-level tasks demonstrates both the usefulness of our explanations and the efficiency of their generation.</p>
+                  </div>
+                </details></li>
+              </ul></td></tr>
+
+          <tr class="is-break"><th scope="row">12:20 &ndash; 2:00</th>
+            <td><span class="ev brk">Lunch &amp; poster session</span></td></tr>
+
+          <tr><th scope="row">2:00 &ndash; 2:30</th>
+            <td><details class="abs">
+              <summary><span class="ev">Jure Leskovec<span class="t-aff">, Stanford University &amp; NVIDIA</span></span>
+                <span class="ev-title">Foundation Models for Structured Data: Learning and Predicting over Relational Databases</span></summary>
+              <div class="abs-body">
+              <p>Relational databases contain the data behind many of an enterprise&rsquo;s most consequential decisions. Yet building predictive models over this data typically requires extensive feature engineering and a separate training pipeline for each task. Can a pretrained foundation model make predictions directly over a database? This talk introduces structured data foundation models that generalize across tables, database schemas, and predictive tasks through in-context learning. I will describe our work on Kumo Tabular and Kumo Relational, including how synthetic data enables pretraining and how attention over rows, columns, and primary-foreign key relationships captures predictive signals across linked tables. I will present results on tabular and relational benchmarks, highlighting both predictive quality and computational efficiency. I will then introduce Predictive Query Language, a declarative interface for specifying what to predict, for which entities, and over what time horizon. This interface connects foundation models to AI agents that combine database queries with predictions. I will conclude with open research questions at the intersection of databases and machine learning, including context selection, temporal correctness, and reliable predictive query execution.</p>
+              </div>
+            </details></td></tr>
+
+          <tr><th scope="row">2:30 &ndash; 3:00</th>
+            <td><details class="abs">
+              <summary><span class="ev">Hung Q. Ngo<span class="t-aff">, RelationalAI</span></span>
+                <span class="ev-title">Worst-Case Optimal Joins: Everything You Always Wanted to Know (But Were Afraid to Ask)</span></summary>
+              <div class="abs-body">
+              <p>Worst-case optimal join (WCOJ) algorithms were introduced about fifteen years ago in a database theory paper. Since then, the idea has made its way into production database engines, and &ldquo;WCOJ&rdquo; has become part of the standard vocabulary of query processing. It is a good moment to take stock, and this talk gives a conceptual account of worst-case optimal joins. I will explain what they are, what the optimality guarantee does and does not promise, and address some common misconceptions about them. I will also survey recent developments in database theory that refine and extend the original result. Much of this literature is written in the cryptic language of entropy and polymatroids, which is not very inviting. A central aim of the talk is to translate these ideas into terms that practitioners already use. No background in the theory is assumed.</p>
+              </div>
+            </details></td></tr>
+
+          <tr class="is-break"><th scope="row">3:00 &ndash; 3:20</th>
+            <td><span class="ev brk">Coffee break &amp; posters</span></td></tr>
+
+          <tr><th scope="row">3:20 &ndash; 3:50</th>
+            <td><details class="abs">
+              <summary><span class="ev">Shasank Chavan<span class="t-aff">, Oracle</span></span>
+                <span class="ev-title">Learning to Talk to Data: Feedback, Semantics, and Trust</span></summary>
+              <div class="abs-body">
+              <p>As natural-language interfaces become part of business analysis and decision-making via NL2SQL, plausible but incorrect answers can undermine confidence in the entire system. Solutions that score high on benchmarks, or do well for isolated queries, do not illicit trust for enterprise use; we need to move towards 100% correct answers across the questions users ask. This talk presents a framework built around Semantics, Feedback, and Trust. Its semantic foundation separates business knowledge (terms, definitions, metrics, rules, etc) from data knowledge (schemas and annotations such as descriptions and sample values). A multi-turn agent retrieves the knowledge relevant to each question, uses it to clarify intent and plan its response, and runs exploratory SQL only when it needs more evidence to understand the data. User feedback guides refinement, while useful discoveries from conversations can be distilled into reusable knowledge. For questions with established answer paths, the system can map natural language and parameters to curated reports or views. Vetted question&ndash;SQL examples and regression tests help validate changes. We compare this approach with other solutions and discuss how the field can move toward the accuracy required for dependable enterprise data access.</p>
+              </div>
+            </details></td></tr>
+
+          <tr><th scope="row">3:50 &ndash; 4:20</th>
+            <td><details class="abs">
+              <summary><span class="ev">Hossein Ahmadi<span class="t-aff">, Snowflake</span></span>
+                <span class="ev-title">Agentic Data Platforms: Lessons from Building One</span></summary>
+              <div class="abs-body">
+              <p>Agentic workloads are quickly becoming the predominant way of managing and interacting with data, and they stress the platform in ways it was never designed for. Agents explore multiple approaches concurrently, issue queries at machine rate, navigate schemas they have never seen, and act with a level of autonomy no human user has, inverting long-held assumptions about semantics, cost, and access control. This raises three architectural questions: how do we make an agentic platform more accurate, more efficient, and better governed? In this talk I will describe how Snowflake has approached each question, the open challenges that remain, and the lessons we learned building an end-to-end agentic platform.</p>
+              </div>
+            </details></td></tr>
+
+          <tr><th scope="row">4:20 &ndash; 5:20</th>
+            <td><span class="ev">Panel discussion</span>
+              <span class="ev-title">Panelists TBD</span></td></tr>
+
+          <tr><th scope="row">5:20 &ndash; 5:30</th>
+            <td><span class="ev">Closing remarks</span></td></tr>
+
+          <tr class="is-break"><th scope="row">5:30 &ndash; 7:00</th>
+            <td><span class="ev brk">Reception</span>
+              <span class="ev-sub">Drinks and conversation, on site</span></td></tr>
+        </tbody>
+      </table>
     </section>
 
     <!-- ==================== HISTORY / EDITIONS ==================== -->
@@ -795,7 +990,7 @@
         <div class="way">
           <h3>Poster</h3>
           <p>For students and postdocs. Submit a title and short abstract by <b>September 15</b>; capacity is limited, and we&rsquo;ll notify by September 20.</p>
-          <a class="btn btn-ghost" data-f="posterBtn" href="#participate">Submit a poster <span class="arr">&rarr;</span></a>
+          <p class="way-note">Poster submissions are closed</p>
         </div>
         <div class="way">
           <h3>Just attend</h3>
@@ -817,92 +1012,123 @@
       </ul>
     </section>
 
+    <!-- ==================== POSTERS ==================== -->
+    <!-- One <li> per poster: the title, then all authors with the presenter in <b>; pressing it opens the abstract. -->
+    <section id="posters">
+      <div class="eyebrow">Posters</div>
+      <h2 class="section-title">Accepted Posters</h2>
+      <ul class="talks posters">
+        <li><details class="abs">
+          <summary><span class="t-title">Interactive Steering of LLM-Powered Scoring Judges with Attune</span>
+            <span class="p-who"><b>Bhavya Chopra</b>, Meng Chen, Rebecca Dang, Chanbin Park, Shreya Shankar, Sepanta Zeighami, Bjoern Hartmann, Aditya Parameswaran<span class="t-aff"> (UC Berkeley)</span></span></summary>
+          <div class="abs-body">
+              <p>Large language models (LLMs) are increasingly used to score text records at scale (e.g., rating candidate resumes on a 1-5 scale). However, existing LLM-powered approaches do not account for the fact that effective scoring requires both holistic understanding of records and locally consistent judgments across similar ones. We present Attune, a mixed-initiative system for steerable LLM-powered scoring. Given a task description and scoring range, Attune performs pairwise comparisons across records to develop a global understanding first, and then resolves these comparisons into consistent score assignments—deriving scoring criteria and rules bottom-up in the process. These serve as shared representations of scoring logic that users can inspect and edit. Based on insights from a formative study (n = 12), Attune&rsquo;s interface introduces novel steering interactions that allow users to deterministically refine scoring logic. Users can provide examples, directly edit criteria, rules, or target distributions, and give natural language feedback—with all refinements compiling into constraints that guide re-scoring. We validate our approach through a technical evaluation across three workloads and a user study with domain experts (n = 8) in healthcare, law, education, and AI evaluation.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Meaningful Data Deletion in Data Processing Pipelines</span>
+            <span class="p-who"><b>Arnav Dhariya</b>, Vishal Chakraborty, Sharad Mehrotra<span class="t-aff"> (UC Irvine)</span></span></summary>
+          <div class="abs-body">
+              <p>Modern systems fail to provide privacy guarantees for deleted data. Meaningful deletion mandates a guarantee that limits what can be inferred about a deleted value from a post-deletion database state. Prior work introduced the P2E2 equivalence, a deterministic framework that achieves meaningful erasure by deleting only enough to reduce inferential power to what was possible before insertion of the target cell. However, eliminating every inference path results in excessive deletions of dependent cells, effectively leaving the data unusable.</p>
+              <p>This motivates a probabilistic relaxation of meaningful deletion: rather than eliminating all inference paths, bounding re-inference probability to a leakage budget permits far fewer auxiliary deletions. We capture data dependencies as weighted relational dependency rules (RDRs) and realize deletion through two mechanisms: Exp, which enumerates all possible masks, and Gum, which uses the Gumbel-max trick. Both methods reduce deletions while controlling leakage through deletion pattern and surviving data. We evaluate them across five datasets and achieve substantial deletion reduction compared to P2E2 while respecting the leakage budget. We extend this framework beyond static instances to data processing pipelines where node-specific corrective actions are required to ensure end-to-end meaningful deletion.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Prela: A composable, controllable query language</span>
+            <span class="p-who">Remy Yisu Wang, <b>Paul Talma</b><span class="t-aff"> (UCLA)</span></span></summary>
+          <div class="abs-body">
+              <p>We revisit Tarski&rsquo;s Algebra of Relations (TAR), an old formalism of relations predating Codd&rsquo;s relational algebra by over 100 years, as a new foundation for relational databases. We argue TAR provides a better abstraction at both the semantic level and the physical level, in the context of modern application code and system architecture. To demonstrate the strengths of TAR, we design and implement Prela, a compositional and controllable query language, and show that queries written in Prela are concise, clear, and efficient.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Optimal Optimization of Optimal Joins</span>
+            <span class="p-who"><b>Zheng Luo</b><span class="t-aff"> (UCLA)</span>, Wim Van den Broeck<span class="t-aff"> (University of Bergen)</span>, Sean Hoffmeister<span class="t-aff"> (UCLA)</span>, Remy Wang<span class="t-aff"> (UCLA)</span></span></summary>
+          <div class="abs-body">
+              <p>There has been renewed interest in instance-optimal join algorithms for acyclic queries, as well as efforts to make them more practical. Execution of these algorithms is typically guided by a join tree. A query may have many different join trees, and any of them guarantees the optimal asymptotic complexity, yet choosing a good tree remains crucial for practical performance. In this paper, we present O3, a linear-time algorithm that constructs an optimal join tree for any alpha-acyclic query. We implement our algorithm in DuckDB, and compare it with prior algorithms on standard benchmarks containing small queries, as well as synthetic ones spanning millions of tables. The experiments show our algorithm matches the end-to-end performance of the baselines on small queries, while gaining orders-of-magnitude speedup on the large ones.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Database Views as Explanations for Relational Deep Learning</span>
+            <span class="p-who"><b>Agapi Rissaki</b><span class="t-aff"> (Northeastern University)</span>, Ilias Fountalis<span class="t-aff"> (RelationalAI)</span>, Wolfgang Gatterbauer<span class="t-aff"> (Northeastern University)</span>, Benny Kimelfeld<span class="t-aff"> (Technion &amp; RelationalAI)</span></span></summary>
+          <div class="abs-body">
+              <p>In recent years, there has been significant progress in the development of deep learning models over relational databases, including architectures based on heterogeneous graph neural networks (hetero-GNNs) and heterogeneous graph transformers. In effect, such architectures state how the database records and links (e.g., foreign-key references) translate into a large, complex numerical expression, involving numerous learnable parameters. This complexity makes it hard to explain, in human-understandable terms, how a model uses the available data to arrive at a given prediction. We present a novel framework for explaining machine-learning models over relational databases, where explanations are view definitions that highlight focused parts of the database that mostly contribute to the model&rsquo;s prediction. We establish such global abductive explanations by adapting the classic notion of determinacy by Nash, Segoufin, and Vianu (2010). In addition to tuning the tradeoff between determinacy and conciseness, the framework allows controlling the level of granularity by adopting different fragments of view definitions, such as ones highlighting whole columns, foreign keys between tables, relevant groups of tuples, and so on. We investigate the realization of the framework in the case of hetero-GNNs, and develop a model-specific approach via the notion of learnable masks. For comparison, we propose model-agnostic heuristic baselines and show that our approach is both more efficient and achieves better explanation quality in most cases. Our extensive empirical evaluation on the RelBench collection across diverse domains and record-level tasks demonstrates both the usefulness of our explanations and the efficiency of their generation.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Manticore: Accelerated Semantic Concurrency Control for Snapshot Transactions in a Modern Document Database</span>
+            <span class="p-who">William Schultz<span class="t-aff"> (MongoDB)</span>, <b>Saikrishna Achalla</b><span class="t-aff"> (UCLA)</span>, Remy Wang<span class="t-aff"> (UCLA)</span>, Murat Demirbas<span class="t-aff"> (MongoDB)</span></span></summary>
+          <div class="abs-body">
+              <p>Most modern transactional concurrency control algorithms target their focus at the key-value abstraction layer, both defining isolation correctness and validating transactions at this low level of detail. Particularly for optimistic concurrency control schemes, this leads to poor performance under high contention due to write conflicts between concurrent transactions. Reasoning at the key-value storage layer also destroys much of the rich, expressive semantic information that exists at the application layer once it is translated to storage operations. In this work, we propose a optimistic semantic-oriented concurrency control engine that operates at the query processing layer and takes advantage of the concrete semantics of application level update operations in order to achieve zero-percent abort rates. Under certain workloads, we observe throughput improvement under increasing contention levels, with up to 20x throughput gains under the highest contention levels compared to traditional concurrency control mechanisms.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">HashBound: Fast and Accurate Cardinality Upper Bounds for Acyclic Queries</span>
+            <span class="p-who"><b>Chun Wang</b>, Nikolaos Tziavelis<span class="t-aff"> (UC Santa Cruz)</span></span></summary>
+          <div class="abs-body">
+              <p>We present HashBound, a guaranteed upper-bound cardinality estimator specialized for acyclic join queries. HashBound partitions the join-key domain into <i>k</i> buckets, storing simple sum and max degree statistics per bucket to compress each attribute into <i>k</i> entries. At query time, the upper bound is computed via a single traversal of the join tree where each edge requires O(<i>k</i>) computation—yielding a process reminiscent of a compressed Yannakakis counting algorithm. Rather than relying on a random hash function, we employ lightweight learning via <i>k</i>-means clustering during preprocessing. By representing each join-key by its degree profile and grouping structurally similar keys together, HashBound improves the error introduced by per-bucket approximations. In contrast to state-of-the-art bounding methods that solve a global linear program per query, HashBound&rsquo;s estimation is solver-free and proceeds from smaller subquery estimates to larger ones.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">A Learned Query Optimizer for Filtered ANN Search</span>
+            <span class="p-who"><b>Abylay Amanbayev</b>, Tri Dang, John Cedric Alora, Florin Rusu<span class="t-aff"> (UC Merced)</span></span></summary>
+          <div class="abs-body">
+              <p>Filtered approximate nearest-neighbor (ANN) search is a per-query optimization problem: the lowest-latency execution plan satisfying a recall requirement depends on the query, its filter, and the available indexes. ANN indexes also expose query-time hyperparameters that control the search budget and are typically tuned manually and fixed across a workload. We present a compact learned optimizer that jointly selects an execution plan and a query-specific hyperparameter value using features available before vector search: filter selectivity and a cheap estimate of Global–Local Selectivity (GLS) correlation. Varying an internal safety margin traces a throughput–recall-safety frontier, reserving expensive search for difficult queries. Across four hard and superhard MoReVec workloads, when 95% of queries meet a Recall@10 target of 0.95, the optimizer achieves 1.7–2.6× the search throughput available on the workload-wide static index–parameter frontier at the same success rate.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Pruning as You Go: Metadata-Only Join Graph Inference</span>
+            <span class="p-who"><b>Tri Dang</b>, Abylay Amanbayev, Florin Rusu<span class="t-aff"> (UC Merced)</span></span></summary>
+          <div class="abs-body">
+              <p>AI-driven workflows over relational data, such as Text-to-SQL, depend on join relationships that are often missing, incomplete, or unreliable in real-world schemas. We study metadata-only join graph inference, where attribute-level join relationships must be recovered from table names, column names, data types, and limited key information without access to data values. Existing approaches verify candidate pairs independently over a fixed candidate set, overlooking the fact that accepted relationships introduce structural constraints that can eliminate competing candidates and reduce the remaining search space. Verification order therefore determines not only the cost of each decision but also which decisions remain. We propose Adaptive Cluster-Guided Join Discovery (ACJD), a framework that treats join inference as a stateful search process. ACJD organizes unresolved candidates into semantic cluster-pair regions, prioritizes candidates using semantic-key similarity, and applies relationship-aware pruning immediately after relationship acceptance. Regions that yield no positive evidence terminate early, avoiding unnecessary verification. Experiments on TPC-H, TPC-DS, BIRD-SQL, and JOB with a GPT-5.5 verifier show that adaptive exploration and the acceptance-time pruning it drives reduce LLM verification workload by 58–78% compared with exhaustive verification of the same candidate space while maintaining comparable or better inference quality. Against direct pairwise verification of all metadata-pruned candidates, the full pipeline matches F1 on three benchmarks and improves F1 on BIRD-SQL while requiring only 17–31% as many candidate evaluations and achieving 4–11× lower API costs. Compared with Nexus, the closest metadata-only baseline, ACJD improves F1 on both BIRD-SQL and TPC-DS under a shared GPT-4o backend.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Direct Access to Query Answers</span>
+            <span class="p-who"><b>Jiayin Hu</b>, Nikolaos Tziavelis<span class="t-aff"> (UC Santa Cruz)</span></span></summary>
+          <div class="abs-body">
+              <p>Direct access asks for the retrieval of query answers by their ranked position, given a query and a desired order. While the time complexity of data structures supporting such accesses has been studied in depth, and efficient algorithms for many queries and common orders are known, their practical performance has received little attention. We provide an implementation covering a wide range of queries and orders; it allows us to investigate intriguing practical aspects, including the comparative performance of database systems and the relationship between direct access and its single-access counterpart.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">MemOS: Wide Sharing for Data Intensive Applications</span>
+            <span class="p-who"><b>Daniel Bittman</b><span class="t-aff"> (Elephance Memory)</span>, Pankaj Mehra<span class="t-aff"> (Elephance Memory and OSU)</span></span></summary>
+          <div class="abs-body">
+              <p>Data intensive applications such as AI demand higher performance, parallelism, and data capacity from hardware, programming models, and infrastructure-level software. Memory-semantic fabrics (CXL, UALink, etc.) enable access to fabric-attached memory, allowing applications to scale their data while exposing data parallelism. Meanwhile, programmers are stuck with host-centric virtual memory and compute-centric programming models which limit the ease and efficiency with which applications can move and manipulate data in dynamic, multi-tiered memory hierarchies, or share memory on fabric-attached devices among cooperating nodes and applications. Further, applications often must construct and destruct many runtime data structures, particularly when switching models or source data, that are not directly sharable across address spaces. Elephance introduces the Memory Objects abstraction for zero-overhead fluid movement and sharing of even complex data structures across heterogeneous systems and memory tiers. Memory objects provide movable and sharable in-memory data structures with memory access semantics designed and optimized for data-centric, in-memory processing, including expressing logical data locality, and reducing page-faults and TLB operations. We show that memory objects enable dramatic reductions in model load time (&gt;100x), switch time (4x), and peak memory usage (9x) for several models on a modified llama.cpp, while demonstrating wide-sharing for key model pipeline data structures. These results extend to other AI frameworks and generalize to other data intensive applications, enabling wide sharing, reduced memory usage, and improved parallelism for complex data structures.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Temporal Motif Estimation using Spanning Tree Sampling</span>
+            <span class="p-who">Yunjie Pan<span class="t-aff"> (Meta)</span>, <b>Omkar Bhalerao</b><span class="t-aff"> (UC Santa Cruz)</span>, C. Seshadhri<span class="t-aff"> (UC Santa Cruz)</span>, Nishil Talati<span class="t-aff"> (University of Illinois Urbana-Champaign)</span></span></summary>
+          <div class="abs-body">
+              <p>The mining of pattern subgraphs, known as motifs, is a core task in the field of graph mining. Edges in real-world networks often have timestamps, so there is a need for temporal motif mining. A temporal motif is a richer structure that imposes timing constraints on the edges of the motif. Temporal motifs have been used to analyze social networks, financial transactions, and biological networks.</p>
+              <p>Motif counting in temporal graphs is particularly challenging. A graph with millions of edges can have trillions of temporal motifs, since the same edge can occur with multiple timestamps. There is a combinatorial explosion of possibilities, and state-of-the-art algorithms cannot manage motifs with more than four vertices.</p>
+              <p>In this work, we present TIMEST: a general, fast, and accurate estimation algorithm to count temporal motifs of arbitrary sizes in temporal networks. Our approach introduces a temporal spanning tree sampler that leverages weighted sampling to generate substructures of target temporal motifs. This method carefully takes a subset of temporal constraints of the motif that can be jointly and efficiently sampled. TIMEST uses randomized estimation techniques to obtain accurate estimates of motif counts.</p>
+              <p>We give theoretical guarantees on the running time and approximation guarantees of TIMEST. We perform an extensive experimental evaluation and show that TIMEST is both faster and more accurate than previous algorithms. Our CPU implementation exhibits an average speedup of 28x over state-of-the-art GPU implementation of the exact algorithm, and 6x speedup over SOTA approximate algorithms while consistently showcasing less than 5% error in most cases. For example, TIMEST can count the number of instances of a financial fraud temporal motif in four minutes with 0.6% error, while exact methods take more than two days.</p>
+          </div>
+        </details></li>
+        <li><details class="abs">
+          <summary><span class="t-title">Oblivious Computation at Terabyte Scale: Relational Databases</span>
+            <span class="p-who"><b>Apostolos Mavrogiannakis</b><span class="t-aff"> (UC Santa Cruz)</span></span></summary>
+          <div class="abs-body">
+              <p>Trusted execution environments let clients outsource computation to untrusted clouds, but they do not hide memory access patterns, which leakage-abuse and side-channel attacks exploit. Oblivious algorithms close this gap, yet they have struggled to meet the performance and scale of real workloads: until recently, the best oblivious joins were evaluated on megabytes of data. This talk follows two systems that push that limit. Obliviator targets a single shared-memory enclave. It introduces an oblivious aggregation tree and a sort-free parallel expansion algorithm, cuts the oblivious sorts in a non-foreign-key join from five to two, and parallelizes every step, running up to 80× faster than the prior state of the art and scaling to hundreds of gigabytes. DISCO then moves beyond one machine, where communication patterns must be hidden too. By partitioning data vertically instead of horizontally, it lets servers compute in parallel with minimal coordination, outperforms prior distributed oblivious joins by up to 180×, and reports the first results at terabyte scale, up to 16 TB. I close with open problems in oblivious query processing, including complex multi-join queries.</p>
+          </div>
+        </details></li>
+        <li><span class="t-title">Blockchain RPC Providers See Every Query: A Leakage Analysis</span>
+          <span class="p-who"><b>Sandhya Saravanan</b><span class="t-aff"> (UC Santa Cruz)</span></span></li>
+      </ul>
+    </section>
 
-
-    <!-- ==================== PROGRAM ==================== -->
-    <section id="program">
-      <div class="eyebrow">Program</div>
-      <h2 class="section-title">Schedule</h2>
-      <!--
-        SCHEDULE — edit rows here.
-
-        Each row is:  <th scope="row">TIME</th>  +  a <td> holding, in order:
-          .ev          the talk title      (add .key to badge it as a keynote)
-          .ev-speaker  Name, Affiliation   (semicolons between groups)
-          .ev-sub      an optional descriptive line
-          details.abs  an optional abstract, collapsed until clicked
-
-        A filled row looks like this — copy it and drop in the real details:
-
-        <tr>
-          <th scope="row">11:30 &ndash; 11:50</th>
-          <td>
-            <span class="ev">Inference-Aware Deletions in Databases</span>
-            <span class="ev-speaker">Vishal Chakraborty (UC Irvine); Youri Kaminsky (HPI)</span>
-            <details class="abs"><summary>Abstract</summary>
-              <p>One or two paragraphs of abstract text.</p></details>
-          </td>
-        </tr>
-      -->
-      <table class="sched">
-        <caption>Tentative schedule &mdash; full program with speakers announced closer to the event.</caption>
-        <thead><tr><th scope="col">Time</th><th scope="col">Session</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">8:00 &ndash; 9:00</th>
-            <td><span class="ev brk">&#9749; Registration &amp; breakfast</span></td></tr>
-
-          <tr><th scope="row">9:00 &ndash; 9:15</th>
-            <td><span class="ev">Welcome &amp; opening remarks</span></td></tr>
-
-          <tr><th scope="row">9:15 &ndash; 10:00</th>
-            <td><span class="ev key">Keynote 1</span>
-              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
-
-          <tr><th scope="row">10:00 &ndash; 10:30</th>
-            <td><span class="ev">Invited talk</span>
-              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
-
-          <tr><th scope="row">10:30 &ndash; 11:00</th>
-            <td><span class="ev brk">&#9749; Coffee break &amp; posters</span></td></tr>
-
-          <tr><th scope="row">11:00 &ndash; 12:00</th>
-            <td><span class="ev">Gong show</span>
-              <span class="ev-sub">Short talks from groups across Northern California</span></td></tr>
-
-          <tr><th scope="row">12:00 &ndash; 1:00</th>
-            <td><span class="ev brk">&#127869; Lunch &amp; poster session</span></td></tr>
-
-          <tr><th scope="row">1:00 &ndash; 1:30</th>
-            <td><span class="ev">Invited talk</span>
-              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
-
-          <tr><th scope="row">1:30 &ndash; 2:15</th>
-            <td><span class="ev key">Keynote 2</span>
-              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
-
-          <tr><th scope="row">2:15 &ndash; 2:45</th>
-            <td><span class="ev brk">&#9749; Coffee break &amp; posters</span></td></tr>
-
-          <tr><th scope="row">2:45 &ndash; 3:15</th>
-            <td><span class="ev">Invited talk</span>
-              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
-
-          <tr><th scope="row">3:15 &ndash; 3:45</th>
-            <td><span class="ev">Invited talk</span>
-              <span class="ev-speaker"><span class="tbd">Speaker TBD</span></span></td></tr>
-
-          <tr><th scope="row">3:45 &ndash; 5:15</th>
-            <td><span class="ev">Panel discussion</span>
-              <span class="ev-speaker"><span class="tbd">Panelists TBD</span></span></td></tr>
-
-          <tr><th scope="row">5:15 &ndash; 5:30</th>
-            <td><span class="ev">Closing remarks</span></td></tr>
-
-          <tr><th scope="row">5:30 &ndash; 7:00</th>
-            <td><span class="ev brk">&#127866; Reception</span>
-              <span class="ev-sub">Drinks and conversation, on site</span></td></tr>
-        </tbody>
-      </table>
+    <!-- ==================== PARKING ==================== -->
+    <section id="parking" class="parking">
+      <div class="eyebrow">Getting here</div>
+      <h2 class="section-title">Parking</h2>
+      <p>Set your directions to <b>&ldquo;UCSC Core West parking&rdquo;</b>.</p>
+      <a class="btn btn-outline" href="https://maps.app.goo.gl/D1t2t8tNHrPiTQLG8" target="_blank" rel="noopener">Core West parking in Google Maps <span class="arr">&rarr;</span></a>
+      <p>Please note that a parking permit is needed to park on campus, which we are covering for this event. Parking attendants with a yellow &ldquo;TAPS&rdquo; flag will be located on the <b>second floor of the building</b>, giving out parking passes for our event between <b>8:30am and 11:30am</b>.</p>
+      <p>From Core West, you will see directional signage to walk to the College 9/10 Multipurpose Room, where the event will be held. It is about a 10-minute walk.</p>
+      <a class="btn btn-outline" href="https://maps.app.goo.gl/VNmZtFaNYR9y2E4UA" target="_blank" rel="noopener">College 9/10 Multipurpose Room in Google Maps <span class="arr">&rarr;</span></a>
+      <p><b>If you arrive after 11:30am:</b> you will need to first go to the TAPS office at the base of the campus, mention the event and obtain a parking pass (at no cost). You can then park in any parking lot on campus, but please note that finding a spot might be difficult because of multiple concurrent events.</p>
+      <a class="btn btn-outline" href="https://maps.app.goo.gl/4DJmt98tcwZLjg5L7" target="_blank" rel="noopener">TAPS office in Google Maps <span class="arr">&rarr;</span></a>
     </section>
 
     <!-- ==================== ORGANIZERS ==================== -->
@@ -943,7 +1169,7 @@
     <div class="side-card dark">
       <h3>Register</h3>
       <div class="big">By October 2</div>
-      <div class="small">Space is limited &mdash; register early.</div>
+      <div class="small">The registration deadline has passed, but a limited number of spots might still be available.</div>
       <div class="small">Registration is free, sponsored by UC&nbsp;Santa&nbsp;Cruz.</div>
       <a class="btn btn-primary" data-f="regLink" href="https://forms.gle/EaAibLGaFwa534fR7">Register <span class="arr">&rarr;</span></a>
       <a class="btn btn-ghost" id="ics" href="#">Add to calendar</a>
@@ -967,6 +1193,7 @@
           <div class="big" style="font-size:19px;" data-f="venue"></div>
           <div class="small"><span data-f="venueRoom"></span> &middot; in person only</div>
           <div class="small" style="margin-top:7px;" data-f="mapLink"></div>
+          <div class="small" style="margin-top:7px;"><a href="#parking">Parking &amp; directions</a></div>
         </div>
       </div>
     </div>
