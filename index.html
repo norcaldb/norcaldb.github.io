@@ -330,6 +330,15 @@
   .talks li:last-child{padding-bottom:0;}
   .t-who{font-weight:600;color:var(--ink);}
   .t-aff{color:var(--muted);}
+
+  /* panel: one column per panelist, affiliation under the name */
+  .panelists{list-style:none;margin:8px 0 0;padding:0;display:grid;
+    grid-template-columns:repeat(3,auto);justify-content:start;gap:10px 26px;}
+  .panelists li{display:flex;flex-direction:column;}
+  .panelists .ev{line-height:1.15;white-space:nowrap;}
+  .panelists .t-aff{font-size:14px;line-height:1.25;margin-top:0;}
+  @media(max-width:700px){.panelists{grid-template-columns:1fr 1fr;gap:10px 16px;}
+    .panelists .ev{white-space:normal;}}
   .t-title{display:block;margin-top:2px;color:var(--body);}
   .posters{margin-top:18px;}
   .posters li{padding:12px 0;font-size:15px;}
@@ -978,8 +987,14 @@
             </details></td></tr>
 
           <tr><th scope="row">4:20 &ndash; 5:20</th>
-            <td><span class="ev">Panel discussion</span>
-              <span class="ev-title">Panelists TBD</span></td></tr>
+            <td><span class="ev">Panel Discussion</span>
+              <ul class="panelists">
+                <li><span class="ev">Ippokratis Pandis (moderator)</span><span class="t-aff">Databricks</span></li>
+                <li><span class="ev">Ihab Ilyas</span><span class="t-aff">Hiddenweights</span></li>
+                <li><span class="ev">Joe Hellerstein</span><span class="t-aff">UC Berkeley &amp; AWS</span></li>
+                <li><span class="ev">Shasank Chavan</span><span class="t-aff">Oracle</span></li>
+                <li><span class="ev">Avrilia Floratou</span><span class="t-aff">Microsoft</span></li>
+              </ul></td></tr>
 
           <tr><th scope="row">5:20 &ndash; 5:30</th>
             <td><span class="ev">Closing remarks</span></td></tr>
