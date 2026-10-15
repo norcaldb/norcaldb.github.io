@@ -881,12 +881,20 @@
           <tr class="is-break"><th scope="row">10:30 &ndash; 10:50</th>
             <td><span class="ev brk">Coffee break &amp; posters</span></td></tr>
 
-          <tr><th scope="row">10:50 &ndash; 11:50</th>
+          <tr><th scope="row">10:50 &ndash; 12:00</th>
             <td><span class="ev">Gong show</span>
-              <span class="ev-sub">Five 10-minute talks from universities in the area</span>
+              <span class="ev-sub">Six 10-minute talks from universities in the area</span>
               <ul class="talks">
                 <li><span class="t-who">Aditya Parameswaran</span><span class="t-aff">, UC Berkeley &amp; Snowflake</span></li>
                 <li><span class="t-who">Nikos Tziavelis</span><span class="t-aff">, UC Santa Cruz</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Shiva Jahangiri</span><span class="t-aff">, Santa Clara University</span>
+                    <span class="t-title">Schema inference and resource management in AsterixDB</span></summary>
+                  <div class="abs-body">
+                    <p>Semi-structured data rarely comes with a reliable schema, and concurrent queries compete for the same memory and CPU. This talk presents two lines of work from the DBIS Lab in Apache AsterixDB that address these problems. The first brings schema inference into SQL++, so data scientists can see the structure of their data and query results. With it, they can also catch schema changes before those changes break their pipelines. The second covers resource management, with a fair scheduler, a priority-based scheduler, and memory-adaptive operators that share memory through a per-node broker.</p>
+                    <p><strong>Bio:</strong> Shiva Jahangiri is an Assistant Professor of Computer Science and Engineering at Santa Clara University, where she leads the Database and Information Systems (DBIS) Lab. Her research is on parallel big data management systems, mainly Apache AsterixDB. Her work covers query scheduling, resource management, and most recently supporting AI workloads in analytical databases.</p>
+                  </div>
+                </details></li>
                 <li><details class="abs">
                   <summary><span class="t-who">Florin Rusu</span><span class="t-aff">, UC Merced</span>
                     <span class="t-title">Data Management Research @ UC Merced</span></summary>
@@ -901,10 +909,16 @@
                     <p>Encrypting data does not hide what computing on it reveals: access patterns and result sizes are enough for leakage-abuse attacks to recover the plaintext. Hardware enclaves, the industry&rsquo;s practical route to confidential computing, remain exposed to side-channel attacks. Oblivious primitives, combined with enclaves, close both gaps and achieve zero leakage, but until recently they were limited to inputs of 100MB&ndash;4GB. In this talk, I give a quick tour of our oblivious building blocks that scale private computation to terabyte-sized inputs today, and onward to petabytes: key-value stores (used in Signal&rsquo;s contact discovery; SOSP&rsquo;21, PVLDB&rsquo;23, USENIX Security&rsquo;26), sort and shuffle (IEEE S&amp;P&rsquo;24, SOSP&rsquo;26), and relational operators and analytics (USENIX Security&rsquo;25, SOSP&rsquo;26). Together they enable databases, systems, and AI pipelines, from analytics and data clean rooms to private RAG, that leak nothing. Zero leakage holds in the strongest adversarial model; I also discuss when relaxing it is viable: under a more realistic threat model, relaxing obliviousness with respect to a tunable leakage parameter, as in SEAL (USENIX Security&rsquo;20), and selectively applying obliviousness to the most leakage-critical computations can approach plaintext performance while retaining strong security guarantees. Two lightning talks and posters from my group show these systems in action today: Nihal Talur presents SONIC, our highly concurrent, low-latency, high-throughput oblivious key-value store, and Apostolos Mavrogiannakis presents Obliviator and DISCO, which make oblivious databases practical at terabyte scale and beyond.</p>
                   </div>
                 </details></li>
-                <li><span class="t-who">Sharad Mehrotra</span><span class="t-aff">, UC Irvine</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Sharad Mehrotra</span><span class="t-aff">, UC Irvine</span>
+                    <span class="t-title">Data Systems for the Age of AI and Agents: Research at UCI&rsquo;s Information Systems Group</span></summary>
+                  <div class="abs-body">
+                    <p>UC Irvine&rsquo;s Information Systems Group (ISG) works on a wide range of technologies: edge computing and edge AI, big data analytics, ML workflows, data integration, and privacy and security. These are applied to water systems, disaster response applications, the sciences, medicine and smart spaces. One thread runs through all of it: bringing AI and agents into data systems, and building data systems that serve agents. This talk highlights three projects. The first extends Apache AsterixDB with in-engine clustering and vector indexing for AI analytical workloads. The second is NSF BRIDGE, a new national cyberinfrastructure that helps scientific communities deploy their own data science workflows. The third is Octopus, which brings full AI support into the database and works at two levels. The first level is the interface to users and LLMs: translating questions into SQL with semantic operators, reusing earlier AI results, and routing each LLM call to the cheapest model that meets its quality target. The second level is the engine itself, and asks how the query engine must change when the clients are agents. It incorporates techniques ranging from lazy evaluation of AI operators, learned predicates that prune data before the models run, and interactive execution that returns early answers so agents can stop or change course mid-query.</p>
+                  </div>
+                </details></li>
               </ul></td></tr>
 
-          <tr><th scope="row">11:50 &ndash; 12:20</th>
+          <tr><th scope="row">12:00 &ndash; 12:30</th>
             <td><span class="ev">Lightning talks</span>
               <span class="ev-sub">Six 5-minute talks</span>
               <ul class="talks">
@@ -926,11 +940,16 @@
                   </div>
                 </details></li>
                 <li><span class="t-who">John Chronis</span><span class="t-aff">, ETH Zurich &amp; Google</span></li>
-                <li><span class="t-who">Nihal Talur</span><span class="t-aff">, UC Santa Cruz</span>
-                  <span class="t-title">Oblivious Computation at Terabyte Scale: Key-Value Stores</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Nihal Talur</span><span class="t-aff">, UC Santa Cruz</span>
+                    <span class="t-title">Oblivious Computation at Terabyte Scale: Key-Value Stores</span></summary>
+                  <div class="abs-body">
+                    <p>Confidential computing encrypts a service&rsquo;s memory, but the host can still see which parts of that memory it accesses. These access patterns can leak the data itself: this year an attack on Intel TDX recovered LLM prompts from a confidential VM. Oblivious key-value stores hide access patterns completely, but they have been impractical to use at scale: the best prior design would need over 1,000 servers to hold 1TB. We built Sonic and Supersonic, which support 16 TiB on 8 servers with zero leakage, even when the host sees every memory access.</p>
+                  </div>
+                </details></li>
                 <li><details class="abs">
                   <summary><span class="t-who">Apostolos Mavrogiannakis</span><span class="t-aff">, UC Santa Cruz</span>
-                    <span class="t-title">Oblivious Computation at Terabyte Scale: Relational Databases</span></summary>
+                    <span class="t-title">Zero-leakage Query Processing at Terabyte Scale</span></summary>
                   <div class="abs-body">
                     <p>Trusted execution environments let clients outsource computation to untrusted clouds, but they do not hide memory access patterns, which leakage-abuse and side-channel attacks exploit. Oblivious algorithms close this gap, yet they have struggled to meet the performance and scale of real workloads: until recently, the best oblivious joins were evaluated on megabytes of data. This talk follows two systems that push that limit. Obliviator targets a single shared-memory enclave. It introduces an oblivious aggregation tree and a sort-free parallel expansion algorithm, cuts the oblivious sorts in a non-foreign-key join from five to two, and parallelizes every step, running up to 80× faster than the prior state of the art and scaling to hundreds of gigabytes. DISCO then moves beyond one machine, where communication patterns must be hidden too. By partitioning data vertically instead of horizontally, it lets servers compute in parallel with minimal coordination, outperforms prior distributed oblivious joins by up to 180×, and reports the first results at terabyte scale, up to 16 TB. I close with open problems in oblivious query processing, including complex multi-join queries.</p>
                   </div>
@@ -944,7 +963,7 @@
                 </details></li>
               </ul></td></tr>
 
-          <tr class="is-break"><th scope="row">12:20 &ndash; 2:00</th>
+          <tr class="is-break"><th scope="row">12:30 &ndash; 2:00</th>
             <td><span class="ev brk">Lunch &amp; poster session</span></td></tr>
 
           <tr><th scope="row">2:00 &ndash; 2:30</th>
