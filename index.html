@@ -886,7 +886,13 @@
               <span class="ev-sub">Six 10-minute talks from universities in the area</span>
               <ul class="talks">
                 <li><span class="t-who">Aditya Parameswaran</span><span class="t-aff">, UC Berkeley &amp; Snowflake</span></li>
-                <li><span class="t-who">Nikos Tziavelis</span><span class="t-aff">, UC Santa Cruz</span></li>
+                <li><details class="abs">
+                  <summary><span class="t-who">Nikos Tziavelis</span><span class="t-aff">, UC Santa Cruz</span>
+                    <span class="t-title">Robust Query Processing with Guarantees</span></summary>
+                  <div class="abs-body">
+                    <p>Database systems run well on the queries they were tuned for, and performance can collapse on the ones they weren&rsquo;t. A common cause is the &ldquo;expand-then-contract&rdquo; pattern: joins build an intermediate result orders of magnitude larger than both the input and the final answer, which is then reduced by ranking, counting, or aggregation. Database theory has shown that broad classes of these queries can be answered in (near-)linear time in the input size, no matter how large the join grows. In this talk, I argue that these guarantees are a practical route to robust query processing. That matters more now that AI agents are writing queries with no expert around to tune them.</p>
+                  </div>
+                </details></li>
                 <li><details class="abs">
                   <summary><span class="t-who">Shiva Jahangiri</span><span class="t-aff">, Santa Clara University</span>
                     <span class="t-title">Schema inference and resource management in AsterixDB</span></summary>
@@ -942,7 +948,7 @@
                 <li><span class="t-who">John Chronis</span><span class="t-aff">, ETH Zurich &amp; Google</span></li>
                 <li><details class="abs">
                   <summary><span class="t-who">Nihal Talur</span><span class="t-aff">, UC Santa Cruz</span>
-                    <span class="t-title">Oblivious Computation at Terabyte Scale: Key-Value Stores</span></summary>
+                    <span class="t-title">Zero-Leakage Confidential Computing for Private AI, Messaging, and Databases</span></summary>
                   <div class="abs-body">
                     <p>Confidential computing encrypts a service&rsquo;s memory, but the host can still see which parts of that memory it accesses. These access patterns can leak the data itself: this year an attack on Intel TDX recovered LLM prompts from a confidential VM. Oblivious key-value stores hide access patterns completely, but they have been impractical to use at scale: the best prior design would need over 1,000 servers to hold 1TB. We built Sonic and Supersonic, which support 16 TiB on 8 servers with zero leakage, even when the host sees every memory access.</p>
                   </div>
